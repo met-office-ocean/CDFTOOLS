@@ -1,6 +1,6 @@
 PROGRAM cdfmocsig
   !!======================================================================
-  !!                     ***  PROGRAM  cdfmocsig  ***
+  !!                     ***  PROGRAM  cdfmocsig  *** 
   !!=====================================================================
   !!  ** Purpose : Compute the Meridional Overturning Cell (MOC)
   !!               using density bins. 
