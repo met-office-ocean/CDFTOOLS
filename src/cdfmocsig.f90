@@ -328,9 +328,9 @@ PROGRAM cdfmocsig
   ibmask(npglo,:,:) = getvar(cn_fmsk, 'vmask', 1, npiglo, npjglo)
 
   IF ( lbas ) THEN
-     ibmask(npatl,:,:) = getvar(cn_fbasins, 'tmaskatl', 1, npiglo, npjglo)
-     ibmask(npind,:,:) = getvar(cn_fbasins, 'tmaskind', 1, npiglo, npjglo)
-     ibmask(nppac,:,:) = getvar(cn_fbasins, 'tmaskpac', 1, npiglo, npjglo)
+     ibmask(npatl,:,:) = getvar(cn_fbasins, cn_vatlmsk, 1, npiglo, npjglo)
+     ibmask(npind,:,:) = getvar(cn_fbasins, cn_vindmsk, 1, npiglo, npjglo)
+     ibmask(nppac,:,:) = getvar(cn_fbasins, cn_vpacmsk, 1, npiglo, npjglo)
      ibmask(npinp,:,:) = ibmask(nppac,:,:) + ibmask(npind,:,:)
      ! ensure that there are no overlapping on the masks
      WHERE(ibmask(npinp,:,:) > 0 ) ibmask(npinp,:,:) = 1
@@ -561,7 +561,6 @@ PROGRAM cdfmocsig
   tim  = getvar1d(cf_vfil, cn_vtimec, npt     )
   ierr = putvar1d(ncout,   tim,       npt, 'T')
   timb = getvar1d_bounds(cf_vfil, TRIM(cn_vtimec)//'_bounds', npt      )
-  PRINT *, timb
   ierr = putvar1d_bounds(ncout,   timb,                       npt, 'T' )
 
 

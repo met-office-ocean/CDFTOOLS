@@ -48,11 +48,16 @@ MODULE modCdfNames
   CHARACTER(LEN=256) :: cn_glamf='glamf', cn_gphif='gphif'   !:  glam gphi
 
   ! Generic mesh-mask file names  cn_f...
-  CHARACTER(LEN=256) :: cn_fzgr='mesh_zgr.nc'
-  CHARACTER(LEN=256) :: cn_fhgr='mesh_hgr.nc'
-  CHARACTER(LEN=256) :: cn_fmsk='mask.nc'
+  CHARACTER(LEN=256) :: cn_fzgr='mesh_mask.nc'
+  CHARACTER(LEN=256) :: cn_fhgr='mesh_mask.nc'
+  CHARACTER(LEN=256) :: cn_fmsk='mesh_mask.nc'
   CHARACTER(LEN=256) :: cn_fcoo='coordinates.nc'
-  CHARACTER(LEN=256) :: cn_fbasins='new_maskglo.nc'
+  CHARACTER(LEN=256) :: cn_fbasins='subbasin.nc'
+
+  ! Mask variable
+  CHARACTER(LEN=256) :: cn_vatlmsk='atlmsk'
+  CHARACTER(LEN=256) :: cn_vindmsk='indmsk'
+  CHARACTER(LEN=256) :: cn_vpacmsk='pacmsk'  
 
   ! Variable name  : cn_v... [ starts with cn_v ]
   CHARACTER(LEN=256) :: cn_votemper='votemper' !: temperature
@@ -79,7 +84,7 @@ MODULE modCdfNames
   CHARACTER(LEN=256) :: cn_soicecov='soicecov' !: Ice cover
 
   ! MOC variables
-  CHARACTER(LEN=256) :: cn_zomsfatl='zomsfatl' !: moc in the Atlantic
+  CHARACTER(LEN=256) :: cn_zomsfatl='zomsfatl' !: moc in the Atlantic         
   CHARACTER(LEN=256) :: cn_zomsfglo='zomsfglo' !: moc in the Global ocean
   CHARACTER(LEN=256) :: cn_zomsfpac='zomsfpac' !: moc in the Pacific
   CHARACTER(LEN=256) :: cn_zomsfinp='zomsfinp' !: moc in the Indo-Pacific
@@ -203,6 +208,9 @@ MODULE modCdfNames
     ! name of mesh_mask files
     NAMELIST/nammeshmask/ cn_fzgr, cn_fhgr, cn_fmsk, cn_fcoo, cn_fbasins
 
+    ! name of mesh_mask variable
+    NAMELIST/nammeshmask_var/ cn_vatlmsk, cn_vindmsk, cn_vpacmsk
+
     ! Bathymetry
     NAMELIST/nambathy/ cn_fbathymet, cn_fbathylev, cn_bathymet, cn_bathylev, cn_mbathy
   !!----------------------------------------------------------------------
@@ -267,7 +275,8 @@ CONTAINS
     READ(inam, namvars    )
     READ(inam, nambathy   )
     READ(inam, namsqdvar  )
-    READ(inam, nammeshmask  )
+    READ(inam, nammeshmask     )
+    READ(inam, nammeshmask_var )
     CLOSE ( inam ) 
 
   END SUBROUTINE ReadCdfNames
@@ -301,7 +310,8 @@ CONTAINS
     WRITE(iout,'(a)' ) ' ! it can be used as input : put variables names in between '' '
     WRITE(iout,'(a)' ) ' ! and separate variables by , '
     WRITE(iout, namsqdvar  )
-    WRITE(iout, nammeshmask  )
+    WRITE(iout, nammeshmask     )
+    WRITE(iout, nammeshmask_var )
     CLOSE (iout)
 
   END SUBROUTINE PrintCdfNames
