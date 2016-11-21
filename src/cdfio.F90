@@ -64,7 +64,7 @@
   IMPLICIT NONE
 
   PRIVATE 
-  INTEGER(KIND=4) :: nid_x, nid_y, nid_z, nid_t, nid_lat, nid_lon, nid_dep, nid_tim
+  INTEGER(KIND=4) :: nid_x, nid_y, nid_z, nid_t, nid_lat, nid_lon, nid_dep, nid_tim, nid_timb, nid_b
   INTEGER(KIND=4) :: nid_lon1d, nid_lat1d
   LOGICAL         :: l_mbathy=.false.
   INTEGER(KIND=4), DIMENSION(:,:), ALLOCATABLE :: mbathy         !: for reading e3._ps in nemo3.x
@@ -164,6 +164,7 @@
   PUBLIC :: putatt, putheadervar, putvar, putvar1d, putvar0d, atted, puttimeatt
   PUBLIC :: getatt, getdim, getvdim, getdimvar,getipk, getnvar, getvarname, getvarid
   PUBLIC :: getvar, getvarxz, getvaryz, getvar1d, getvare3, getvar3d, getvar3dt, getvar4d, getspval
+  PUBLIC :: getvar1d_bounds, putvar1d_bounds
   PUBLIC :: gettimeseries
   PUBLIC :: closeout, ncopen
   PUBLIC :: ERR_HDL
@@ -216,12 +217,13 @@ CONTAINS
           istatus=NF90_PUT_ATT(kcout, kidvar, 'valid_max',  90.          )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'long_name','Latitude'     )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'nav_model', 'Default grid')
-       CASE ('time_counter', 'time', 't' )
+       CASE ('time_counter', 'time', 't', 'time_centered' )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'calendar',   calendar     )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'units',      ctime_units  )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'time_origin',ctime_origin )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'title',      'Time'       )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'long_name',  'Time axis'  )
+          istatus=NF90_PUT_ATT(kcout, kidvar, 'bounds',     TRIM(cdvar)//'_bounds')
        CASE ('deptht', 'depthu' ,'depthv' , 'depthw', 'dep', 'gdept'     )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'units',      'm'          )
           istatus=NF90_PUT_ATT(kcout, kidvar, 'positive',  'unknown'     )
@@ -305,6 +307,7 @@ CONTAINS
 
 
     istatus = NF90_DEF_DIM(icout,cn_t,NF90_UNLIMITED, nid_t)
+    istatus = NF90_DEF_DIM(icout,'axis_nbounds',2, nid_b)
 
     invdim(1) = nid_x ; invdim(2) = nid_y ; invdim(3) = nid_z ; invdim(4) = nid_t
 
@@ -341,6 +344,7 @@ CONTAINS
 
     istatus = NF90_DEF_VAR(icout,cn_vtimec,NF90_FLOAT,(/nid_t/), nid_tim)
     istatus = copyatt(cn_vtimec, nid_tim,incid,icout)
+    istatus = NF90_DEF_VAR(icout,TRIM(cn_vtimec)//'_bounds',NF90_FLOAT,(/nid_b,nid_t/), nid_timb)
 
     ! Add Global General attribute at first call
     istatus=NF90_PUT_ATT(icout,NF90_GLOBAL,'start_date', nstart_date )
@@ -1561,6 +1565,7 @@ CONTAINS
     IF (lsf )  WHERE (getvar /= spval )  getvar=getvar*sf
     IF (lao )  WHERE (getvar /= spval )  getvar=getvar + ao
     IF (llog)  WHERE (getvar /= spval )  getvar=10**getvar
+    WHERE (getvar == spval )  getvar=0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -1665,6 +1670,7 @@ CONTAINS
     IF (lsf )  WHERE (getvar3d /= spval )  getvar3d=getvar3d*sf
     IF (lao )  WHERE (getvar3d /= spval )  getvar3d=getvar3d + ao
     IF (llog)  WHERE (getvar3d /= spval )  getvar3d=10**getvar3d
+    WHERE (getvar3d == spval )  getvar3d=0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -1769,6 +1775,7 @@ CONTAINS
     IF (lsf )  WHERE (getvar3dt /= spval )  getvar3dt=getvar3dt*sf
     IF (lao )  WHERE (getvar3dt /= spval )  getvar3dt=getvar3dt + ao
     IF (llog)  WHERE (getvar3dt /= spval )  getvar3dt=10**getvar3dt
+    WHERE (getvar3dt == spval )  getvar3dt=0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -1878,6 +1885,7 @@ CONTAINS
     IF (lsf )  WHERE (getvar4d /= spval )  getvar4d=getvar4d*sf
     IF (lao )  WHERE (getvar4d /= spval )  getvar4d=getvar4d + ao
     IF (llog)  WHERE (getvar4d /= spval )  getvar4d=10**getvar4d
+    WHERE (getvar4d == spval )  getvar4d=0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -1982,6 +1990,7 @@ CONTAINS
     IF (lsf )  WHERE (getvarxz /= spval )  getvarxz=getvarxz*sf
     IF (lao )  WHERE (getvarxz /= spval )  getvarxz=getvarxz + ao
     IF (llog)  WHERE (getvarxz /= spval )  getvarxz=10**getvarxz
+    WHERE (getvarxz == spval ) getvarxz = 0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -2087,6 +2096,7 @@ CONTAINS
     IF (lsf )  WHERE (getvaryz /= spval )  getvaryz=getvaryz*sf
     IF (lao )  WHERE (getvaryz /= spval )  getvaryz=getvaryz + ao
     IF (llog)  WHERE (getvaryz /= spval )  getvaryz=10**getvaryz
+    WHERE (getvaryz == spval ) getvaryz = 0.0
 
     istatus=NF90_CLOSE(incid)
 
@@ -2127,6 +2137,40 @@ CONTAINS
 
   END FUNCTION getvar1d
 
+  FUNCTION  getvar1d_bounds (cdfile, cdvar, kk, kstatus)
+    !!-------------------------------------------------------------------------
+    !!                  ***  FUNCTION  getvar1d  ***
+    !!
+    !! ** Purpose :  return 1D variable cdvar from cdfile, of size kk
+    !!
+    !!-------------------------------------------------------------------------
+    CHARACTER(LEN=*),           INTENT(in) :: cdfile   ! file name to work with
+    CHARACTER(LEN=*),           INTENT(in) :: cdvar    ! variable name to work with
+    INTEGER(KIND=4),            INTENT(in) :: kk       ! size of 1D vector to be returned
+    INTEGER(KIND=4), OPTIONAL, INTENT(out) :: kstatus  ! return status concerning the variable existence
+    REAL(KIND=4), DIMENSION(kk,2)          :: getvar1d_bounds ! real returned vector
+
+    INTEGER(KIND=4), DIMENSION(2) :: istart, icount
+    INTEGER(KIND=4) :: incid, id_var
+    INTEGER(KIND=4) :: istatus
+    !!-------------------------------------------------------------------------
+    istart(:) = 1
+    icount(1)=2; icount(2)=kk
+
+    IF ( PRESENT(kstatus) ) kstatus = 0
+
+    istatus=NF90_OPEN(cdfile,NF90_NOWRITE,incid)
+    istatus=NF90_INQ_VARID ( incid,cdvar,id_var)
+    IF ( istatus == NF90_NOERR ) THEN
+       istatus=NF90_GET_VAR(incid,id_var,getvar1d_bounds,start=istart,count=icount)
+    ELSE
+       IF ( PRESENT(kstatus) ) kstatus= istatus
+       getvar1d_bounds(:,:)=99999999999.
+    ENDIF
+
+    istatus=NF90_CLOSE(incid)
+
+  END FUNCTION getvar1d_bounds
 
   FUNCTION  getvare3 (cdfile,cdvar,kk)
     !!-------------------------------------------------------------------------
@@ -2629,6 +2673,40 @@ CONTAINS
     putvar1d4=istatus
 
   END FUNCTION putvar1d4
+
+  INTEGER(KIND=4) FUNCTION putvar1d_bounds(kout, ptab, kk, cdtype)
+    !!---------------------------------------------------------------------
+    !!                  ***  FUNCTION putvar1d4  ***
+    !!
+    !! ** Purpose :  Copy 1D variable (size kk) hold in ptab,  with id 
+    !!               kid, into file id kout 
+    !!
+    !! ** Method  : cdtype is either T (time_counter) or D (depth.)
+    !!                         LON (1D longitude) or LAT (1D latitude)
+    !!
+    !!----------------------------------------------------------------------
+    INTEGER(KIND=4),            INTENT(in) :: kout   ! ncid of output file
+    REAL(KIND=4), DIMENSION(kk,2),INTENT(in) :: ptab   ! 1D array to write in file
+    INTEGER(KIND=4),            INTENT(in) :: kk     ! number of elements in ptab
+    CHARACTER(LEN=1),           INTENT(in) :: cdtype ! either T or D LON or LAT
+
+    INTEGER(KIND=4)               :: istatus, iid
+    INTEGER(KIND=4), DIMENSION(2) :: istart, icount
+    !!----------------------------------------------------------------------
+    SELECT CASE ( cdtype )
+    CASE ('T', 't' )
+       iid = nid_timb
+    CASE DEFAULT
+       PRINT *, 'E R R O R: CASE ',cdtype,' do not coded'
+       STOP
+    END SELECT
+
+    istart(:) = 1
+    icount(1) = 2; icount(2)=kk
+    istatus=NF90_PUT_VAR(kout,iid, ptab, start=istart,count=icount)
+    putvar1d_bounds=istatus
+  END FUNCTION putvar1d_bounds
+
 
   INTEGER(KIND=4) FUNCTION reputvar1d4(cdfile, cdvar, ptab, kk )
     !!---------------------------------------------------------------------

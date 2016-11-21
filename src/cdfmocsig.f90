@@ -1,6 +1,6 @@
 PROGRAM cdfmocsig
   !!======================================================================
-  !!                     ***  PROGRAM  cdfmocsig  *****
+  !!                     ***  PROGRAM  cdfmocsig  ***
   !!=====================================================================
   !!  ** Purpose : Compute the Meridional Overturning Cell (MOC)
   !!               using density bins. 
@@ -65,6 +65,7 @@ PROGRAM cdfmocsig
   REAL(KIND=4), DIMENSION (:,:),      ALLOCATABLE :: rdumlat              ! latitude for i = north pole
   REAL(KIND=4), DIMENSION (:,:),      ALLOCATABLE :: zttmp                ! arrays to call sigmai and mask it
   REAL(KIND=4), DIMENSION (:,:),      ALLOCATABLE :: zarea                ! product e1v * e3v
+  REAL(KIND=4), DIMENSION (:,:),      ALLOCATABLE :: timb                 ! time counter
   REAL(KIND=4), DIMENSION (:),        ALLOCATABLE :: sigma                ! density coordinate 
   REAL(KIND=4), DIMENSION (:),        ALLOCATABLE :: e31d                 ! vertical level (full step)
   REAL(KIND=4), DIMENSION (:),        ALLOCATABLE :: gdep                 ! depth of T layers ( full step)
@@ -104,7 +105,7 @@ PROGRAM cdfmocsig
   narg= iargc()
   IF ( narg == 0 ) THEN
      PRINT *,' usage : cdfmocsig  V_file T_file depth_ref [-eiv] [-full]  ... '
-     PRINT *,'         ...  [-sigmin sigmin] [-sigstp sigstp] [-nbins nbins] [-isodep] [-v]'
+     PRINT *,'         ...  [-sigmin sigmin] [-sigstp sigstp] [-nbins nbins] [-isodep] [-v] [-o output_name]'
      PRINT *,'     PURPOSE : '
      PRINT *,'       Computes the MOC in density-latitude coordinates. The global value'
      PRINT *,'       is always computed. Values for oceanic sub-basins are calculated'
@@ -136,6 +137,7 @@ PROGRAM cdfmocsig
      PRINT *,'       [ -nbins ]  : Specify the number of density bins you want'
      PRINT *,'       [ -isodep]  : Compute the zonal mean of isopycnal depths used for mocsig'
      PRINT *,'       [ -v  ]     : Verbose option for more info during execution'
+     PRINT *,'       [ -o  ]     : Specify an output name'
      PRINT *,'      '
      PRINT *,'     REQUIRED FILES :'
      PRINT *,'        Files ', TRIM(cn_fzgr),', ',TRIM(cn_fhgr),', ', TRIM(cn_fmsk)
@@ -179,6 +181,8 @@ PROGRAM cdfmocsig
         lisodep = .TRUE.
      CASE ('-v')
         lprint = .TRUE.
+     CASE ('-o')
+        CALL getarg (ijarg, cf_moc) ; ijarg=ijarg+1 ;
      CASE DEFAULT
         ii=ii+1
         SELECT CASE (ii)
@@ -291,6 +295,7 @@ PROGRAM cdfmocsig
   ALLOCATE ( dens(npiglo,npjglo))
   ALLOCATE ( itmask(npiglo,npjglo), zttmp(npiglo,npjglo))
   ALLOCATE ( tim(npt), e31d(npk)  )
+  ALLOCATE ( timb(npt,2))
 
   IF ( lisodep) THEN 
                 ALLOCATE ( depi(nvaro, nbins, npjglo), gdep(npk))
@@ -555,6 +560,10 @@ PROGRAM cdfmocsig
 
   tim  = getvar1d(cf_vfil, cn_vtimec, npt     )
   ierr = putvar1d(ncout,   tim,       npt, 'T')
+  timb = getvar1d_bounds(cf_vfil, TRIM(cn_vtimec)//'_bounds', npt      )
+  PRINT *, timb
+  ierr = putvar1d_bounds(ncout,   timb,                       npt, 'T' )
+
 
   END SUBROUTINE CreateOutputFiles
 
