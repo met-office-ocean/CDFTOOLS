@@ -8,5 +8,5 @@ F90=ftn -e F # force preprocessor irrespective of capitalization of file name
 FFLAGS= $(NC4) -O2  $(NCDF) $(LIBS)
 LMPI=-lmpich
 
-INSTALL=$(HOME)/CDFTOOLS-3.0/bin/
+INSTALL=$(HOME)/bin/
 
