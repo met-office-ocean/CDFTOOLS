@@ -38,8 +38,8 @@ PROGRAM cdfmocsig
   INTEGER(KIND=2), DIMENSION (:,:,:), ALLOCATABLE ::  ibmask              ! nbasins x npiglo x npjglo
   INTEGER(KIND=2), DIMENSION (:,:),   ALLOCATABLE ::  itmask              ! tmask from salinity field
 
-  INTEGER(KIND=4)                                 :: jbasin, jj, jk       ! dummy loop index
-  INTEGER(KIND=4)                                 :: ji, jt, jbin         ! dummy loop index
+  INTEGER(KIND=4)                                 :: jbasin, jj , jk      ! dummy loop index
+  INTEGER(KIND=4)                                 :: ji, jt, jtm, jbin    ! dummy loop index
   INTEGER(KIND=4)                                 :: nbins                ! number of  density  bins
   INTEGER(KIND=4)                                 :: npglo, npatl, npinp  ! basins index (mnemonics)
   INTEGER(KIND=4)                                 :: npind, nppac         !  "      "
@@ -85,7 +85,9 @@ PROGRAM cdfmocsig
 
   CHARACTER(LEN=256)                              :: cf_vfil              ! meridional velocity file
   CHARACTER(LEN=256)                              :: cf_tfil              ! temperature/salinity file
+  CHARACTER(LEN=256)                              :: cf_e3v               ! metrics file
   CHARACTER(LEN=256)                              :: cf_moc='mocsig.nc'   ! output file
+  CHARACTER(LEN=256)                              :: cv_e3v               ! e3v variable
   CHARACTER(LEN=255)                              :: cglobal              ! Global attribute
   CHARACTER(LEN=256)                              :: cldum                ! dummy char variable
 
@@ -99,6 +101,7 @@ PROGRAM cdfmocsig
   LOGICAL                                         :: leiv   = .FALSE.     ! flag for Eddy Induced Velocity (GM)
   LOGICAL                                         :: lfull  = .FALSE.     ! flag for full step
   LOGICAL                                         :: lchk   = .FALSE.     ! flag for missing file
+  LOGICAL                                         :: lmet   = .FALSE.     ! flag for metrics location
   !!----------------------------------------------------------------------
   CALL ReadCdfNames()
 
@@ -138,6 +141,7 @@ PROGRAM cdfmocsig
      PRINT *,'       [ -isodep]  : Compute the zonal mean of isopycnal depths used for mocsig'
      PRINT *,'       [ -v  ]     : Verbose option for more info during execution'
      PRINT *,'       [ -o  ]     : Specify an output name'
+     PRINT *,'       [ -metrics] : Read the metrics into the data file' 
      PRINT *,'      '
      PRINT *,'     REQUIRED FILES :'
      PRINT *,'        Files ', TRIM(cn_fzgr),', ',TRIM(cn_fhgr),', ', TRIM(cn_fmsk)
@@ -183,6 +187,8 @@ PROGRAM cdfmocsig
         lprint = .TRUE.
      CASE ('-o')
         CALL getarg (ijarg, cf_moc) ; ijarg=ijarg+1 ;
+     CASE ('-metrics')
+        lmet = .TRUE.
      CASE DEFAULT
         ii=ii+1
         SELECT CASE (ii)
@@ -308,6 +314,17 @@ PROGRAM cdfmocsig
   IF ( lfull  ) e31d(:) = getvare3(cn_fzgr, cn_ve3t,  npk )
   IF ( lisodep) gdep(:) = -getvare3(cn_fzgr, cn_gdept, npk )  ! take negative value
                                                               ! to be compliant with zonal mean
+  ! metrics location
+  IF ( lmet ) THEN
+     cf_e3v = cf_vfil ; cv_e3v = 'e3v'
+     PRINT *,''
+     PRINT *, 'e3v metrics for mocsig computation come from input data file: '
+     PRINT *, TRIM(cf_e3v)
+     PRINT *,''
+  ELSE
+     cf_e3v = cn_fzgr ; cv_e3v = cn_ve3v
+  ENDIF
+
 
   IF ( npjglo > 1 ) THEN 
      gphiv(:,:)   = getvar(cn_fhgr, cn_gphiv, 1, npiglo, npjglo)
@@ -340,6 +357,8 @@ PROGRAM cdfmocsig
   ENDIF
 
   DO jt=1, npt
+     PRINT *, ''
+     PRINT *, ' working at time ',jt,'/',npt 
      ! initialize moc to 0
      dmoc(:,:,:) = 0.d0 
      IF ( lisodep ) THEN 
@@ -347,6 +366,7 @@ PROGRAM cdfmocsig
      ENDIF
 
      DO jk=1,npk-1
+        IF ( MOD(jk,25)==0 .AND. .NOT. lprint ) PRINT *,'    working at depth ',jk,'/',npk-1
         !               for testing purposes only loop from 2 to 400
         IF (lprint) PRINT *,' working at depth ',jk
         ! Get velocities v at jj
@@ -363,7 +383,9 @@ PROGRAM cdfmocsig
         IF ( lfull ) THEN
            e3v(:,:) = e31d(jk)
         ELSE
-           e3v(:,:) = getvar(cn_fzgr, 'e3v_ps', jk, npiglo, npjglo, ldiom=.TRUE.)
+           jtm = 1
+           IF ( lmet ) jtm = jt
+           e3v(:,:) = getvar(cf_e3v, cv_e3v, jk, npiglo, npjglo, ktime = jtm)
         ENDIF
         zarea(:,:) = e1v(:,:) * e3v(:,:)
         !
@@ -467,6 +489,9 @@ PROGRAM cdfmocsig
   ENDDO  ! time loop
 
   ierr = closeout(ncout)
+
+  PRINT *,''
+  PRINT *,' cdfmosig finished correctly.'
 
   CONTAINS
   SUBROUTINE CreateOutputFiles
