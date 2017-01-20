@@ -190,8 +190,8 @@ MODULE modCdfNames
     NAMELIST/namvars/ cn_sohefldo, cn_solhflup, cn_sosbhfup
     NAMELIST/namvars/ cn_solwfldo, cn_soshfldo
     NAMELIST/namvars/ cn_sowaflup, cn_sowaflcd, cn_sowafldp, cn_iowaflup
-    NAMELIST/namvars/ cn_zomsfatl, cn_zomsfglo, cn_zomsfpac, cn_zomsfinp, cn_zomsfind
-    NAMELIST/namvars/ cn_zoisoatl, cn_zoisoglo, cn_zoisopac, cn_zoisoinp, cn_zoisoind
+    NAMELIST/namvars/ cn_zomsfatl, cn_zomsfglo, cn_zomsfpac, cn_zomsfinp, cn_zomsfind, cn_zomsfinp0
+    NAMELIST/namvars/ cn_zoisoatl, cn_zoisoglo, cn_zoisopac, cn_zoisoinp, cn_zoisoind, cn_zoisoinp0
     NAMELIST/namvars/ cn_vozout, cn_vomevt, cn_vozous, cn_vomevs
     NAMELIST/namvars/ cn_sozout, cn_somevt, cn_sozous, cn_somevs
     NAMELIST/namvars/ cn_sozoutrp, cn_somevtrp
@@ -276,6 +276,7 @@ CONTAINS
     READ(inam, namvars    )
     READ(inam, nambathy   )
     READ(inam, namsqdvar  )
+    READ(inam, namcubvar  )
     READ(inam, nammeshmask     )
     READ(inam, nammeshmask_var )
     CLOSE ( inam ) 

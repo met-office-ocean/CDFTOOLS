@@ -71,7 +71,7 @@ PROGRAM cdfmoc
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: gdepw           ! depthw
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: gdept           ! deptht
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: e31d            ! e3 1D : used if full step
-  REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: tim             ! time counter array
+  REAL(KIND=8), DIMENSION(:),     ALLOCATABLE :: tim             ! time counter array
 
   REAL(KIND=8), DIMENSION(:,:,:), ALLOCATABLE :: dmoc            ! nbasins x npjglo x npk
 
@@ -296,9 +296,9 @@ PROGRAM cdfmoc
   ! 1 : global ; 2 : Atlantic ; 3 : Indo-Pacif ; 4 : Indian ; 5 : Pacif
   ibmask(npglo,:,:) = getvar(cn_fmsk,   'vmask', 1, npiglo, npjglo)
   IF ( lbas ) THEN
-     ibmask(npatl,:,:) = getvar(cn_fbasins, 'tmaskatl', 1, npiglo, npjglo)
-     ibmask(npind,:,:) = getvar(cn_fbasins, 'tmaskind', 1, npiglo, npjglo)
-     ibmask(nppac,:,:) = getvar(cn_fbasins, 'tmaskpac', 1, npiglo, npjglo)
+     ibmask(npatl,:,:) = getvar(cn_fbasins, cn_vatlmsk, 1, npiglo, npjglo)
+     ibmask(npind,:,:) = getvar(cn_fbasins, cn_vindmsk, 1, npiglo, npjglo)
+     ibmask(nppac,:,:) = getvar(cn_fbasins, cn_vpacmsk, 1, npiglo, npjglo)
      ibmask(npinp,:,:) = ibmask(nppac,:,:) + ibmask(npind,:,:)  ! indo pacific mask
      ! ensure that there are no overlapping on the masks
      WHERE(ibmask(npinp,:,:) > 0 ) ibmask(npinp,:,:) = 1
@@ -1150,9 +1150,9 @@ PROGRAM cdfmoc
 
        END DO   ! time loop
 
-       tim  = getvar1d( cf_vfil, cn_vtimec, npt     )
-       ierr = putvar1d( ncout,   tim,       npt, 'T')
-       ierr = closeout( ncout                       )
+       tim  = getvar1d8( cf_vfil, cn_vtimec, npt     )
+       ierr = putvar1d(  ncout,   tim,       npt, 'T')
+       ierr = closeout(  ncout                       )
 
      END SUBROUTINE rapid_amoc
 
@@ -1333,7 +1333,7 @@ PROGRAM cdfmoc
   ncout = create      ( cf_moc,  'none',    1, npjglo, npk, cdep=cn_vdepthw )
   ierr  = createvar   ( ncout,   stypvar,   nvarout,   ipk, id_varout, cdglobal=TRIM(cglobal)           )
   ierr  = putheadervar( ncout,   cf_vfil,   1, npjglo, npk, pnavlon=rdumlon, pnavlat=rdumlat, pdep=gdepw)
-  tim   = getvar1d    ( cf_vfil, cn_vtimec, npt                    )
+  tim   = getvar1d8   ( cf_vfil, cn_vtimec, npt                    )
   ierr  = putvar1d    ( ncout,   tim,       npt, 'T')
 
      END SUBROUTINE CreateOutput

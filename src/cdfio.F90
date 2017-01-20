@@ -32,7 +32,8 @@
   !!   getipk        : get the vertical dimension of the variable
   !!   getnvar       : get the number of variable in a file
   !!   getspval      : get spval of a given variable
-  !!   getvar1d      : read 1D variable (eg depth, time_counter) from a file
+  !!   getvar1d      : read 1D real*4 variable (eg depth, time_counter) from a file
+  !!   getvar1d8     : read 1D real*8 variable (eg depth, time_counter) from a file
   !!   getvar3d      : read 3D variable  at once
   !!   getvaratt     : read variable attributes
   !!   gettimeatt    : get time attributes
@@ -50,13 +51,15 @@
   !!   putheadervar  : write header variables such as nav_lon, nav_lat etc ... from a file taken
   !!                 : as template
   !!   putvar0d      : write a 0d variable (constant)
-  !!   putvar1d4     : write a 1d variable
+  !!   putvar1d4     : write a 1d real*4 variable
+  !!   putvar1d8     : write a 1d real*8 variable
   !!   putvari2      : write a 2d Integer*2 variable
   !!   putvarr4      : write a 2d Real*4 variable
   !!   putvarr8      : write a 2d Real*8 variable
   !!   putvarzo      : write a zonally integrated/mean field
   !!   reputvarr4    : re-write a real*4 variable
-  !!   reputvar1d4   : re-write a real*4 1d variable 
+  !!   reputvar1d4   : re-write a real*4 1d variable
+  !!   reputvar1d8   : re-write a real*8 1d variable
   !!------------------------------------------------------------------------------------------------------
   USE netcdf        
   USE modcdfnames
@@ -148,7 +151,7 @@
   END INTERFACE
 
   INTERFACE putvar1d   
-     MODULE PROCEDURE putvar1d4, reputvar1d4
+     MODULE PROCEDURE putvar1d4, reputvar1d4, putvar1d8, reputvar1d8
   END INTERFACE
 
   INTERFACE putvar0d   
@@ -163,7 +166,7 @@
   PUBLIC :: copyatt, create, createvar, getvaratt, cvaratt, gettimeatt
   PUBLIC :: putatt, putheadervar, putvar, putvar1d, putvar0d, atted, puttimeatt
   PUBLIC :: getatt, getdim, getvdim, getdimvar,getipk, getnvar, getvarname, getvarid
-  PUBLIC :: getvar, getvarxz, getvaryz, getvar1d, getvare3, getvar3d, getvar3dt, getvar4d, getspval
+  PUBLIC :: getvar, getvarxz, getvaryz, getvar1d, getvar1d8, getvare3, getvar3d, getvar3dt, getvar4d, getspval
   PUBLIC :: getvar1d_bounds, putvar1d_bounds
   PUBLIC :: gettimeseries
   PUBLIC :: closeout, ncopen
@@ -342,9 +345,9 @@ CONTAINS
        istatus = copyatt(TRIM(cldepvar), nid_dep,incid,icout)
     ENDIF
 
-    istatus = NF90_DEF_VAR(icout,cn_vtimec,NF90_FLOAT,(/nid_t/), nid_tim)
+    istatus = NF90_DEF_VAR(icout,cn_vtimec,NF90_DOUBLE,(/nid_t/), nid_tim)
     istatus = copyatt(cn_vtimec, nid_tim,incid,icout)
-    istatus = NF90_DEF_VAR(icout,TRIM(cn_vtimec)//'_bounds',NF90_FLOAT,(/nid_b,nid_t/), nid_timb)
+    istatus = NF90_DEF_VAR(icout,TRIM(cn_vtimec)//'_bounds',NF90_DOUBLE,(/nid_b,nid_t/), nid_timb)
 
     ! Add Global General attribute at first call
     istatus=NF90_PUT_ATT(icout,NF90_GLOBAL,'start_date', nstart_date )
@@ -825,7 +828,7 @@ CONTAINS
 
        IF ( lexact ) THEN
           istatus=NF90_INQ_DIMID(incid, cdim_name, id_dim)
-          IF (istatus /= NF90_NOERR ) THEN
+          IF (istatus /= NF90_NOERR .AND. .NOT. PRESENT(kstatus) ) THEN
             PRINT *,NF90_STRERROR(istatus)
             PRINT *,' Exact dimension name ', TRIM(cdim_name),' not found in ',TRIM(cdfile) ; STOP
           ENDIF
@@ -1251,7 +1254,12 @@ CONTAINS
     IF (PRESENT(kimin) ) THEN
        imin=kimin
 
-       ipiglo=getdim(cdfile, cn_x, ldexact=.true.)
+       ipiglo=getdim(cdfile, cn_x, ldexact=.true., kstatus=istatus)
+       ! Else try mesh dimension name
+       IF ( istatus /= 0 ) THEN
+          ipiglo=getdim(cdfile, 'x', ldexact=.true., kstatus=istatus)
+       ENDIF
+
        IF (imin+kpi-1 > ipiglo ) THEN 
          llperio=.true.
          imax=kpi+1 +imin -ipiglo
@@ -2137,6 +2145,40 @@ CONTAINS
 
   END FUNCTION getvar1d
 
+  FUNCTION  getvar1d8 (cdfile, cdvar, kk, kstatus)
+    !!-------------------------------------------------------------------------
+    !!                  ***  FUNCTION  getvar1d8  ***
+    !!
+    !! ** Purpose :  return 1D variable cdvar from cdfile, of size kk
+    !!
+    !!-------------------------------------------------------------------------
+    CHARACTER(LEN=*),           INTENT(in) :: cdfile   ! file name to work with
+    CHARACTER(LEN=*),           INTENT(in) :: cdvar    ! variable name to work with
+    INTEGER(KIND=4),            INTENT(in) :: kk       ! size of 1D vector to be returned
+    INTEGER(KIND=4), OPTIONAL, INTENT(out) :: kstatus  ! return status concerning the variable existence
+    REAL(KIND=8), DIMENSION(kk)            :: getvar1d8 ! real returned vector
+
+    INTEGER(KIND=4), DIMENSION(1) :: istart, icount
+    INTEGER(KIND=4) :: incid, id_var
+    INTEGER(KIND=4) :: istatus
+    !!-------------------------------------------------------------------------
+    istart(:) = 1
+    icount(1)=kk
+    IF ( PRESENT(kstatus) ) kstatus = 0
+
+    istatus=NF90_OPEN(cdfile,NF90_NOWRITE,incid)
+    istatus=NF90_INQ_VARID ( incid,cdvar,id_var)
+    IF ( istatus == NF90_NOERR ) THEN
+       istatus=NF90_GET_VAR(incid,id_var,getvar1d8,start=istart,count=icount)
+    ELSE
+       IF ( PRESENT(kstatus) ) kstatus= istatus
+       getvar1d8=99999999999.
+    ENDIF
+
+    istatus=NF90_CLOSE(incid)
+
+  END FUNCTION getvar1d8
+
   FUNCTION  getvar1d_bounds (cdfile, cdvar, kk, kstatus)
     !!-------------------------------------------------------------------------
     !!                  ***  FUNCTION  getvar1d  ***
@@ -2674,6 +2716,43 @@ CONTAINS
 
   END FUNCTION putvar1d4
 
+  INTEGER(KIND=4) FUNCTION putvar1d8(kout, ptab, kk, cdtype)
+    !!---------------------------------------------------------------------
+    !!                  ***  FUNCTION putvar1d8  ***
+    !!
+    !! ** Purpose :  Copy 1D variable (size kk) hold in ptab,  with id 
+    !!               kid, into file id kout 
+    !!
+    !! ** Method  : cdtype is either T (time_counter) or D (depth.)
+    !!                         LON (1D longitude) or LAT (1D latitude)
+    !!
+    !!----------------------------------------------------------------------
+    INTEGER(KIND=4),            INTENT(in) :: kout   ! ncid of output file
+    REAL(KIND=8), DIMENSION(kk),INTENT(in) :: ptab   ! 1D array to write in file
+    INTEGER(KIND=4),            INTENT(in) :: kk     ! number of elements in ptab
+    CHARACTER(LEN=1),           INTENT(in) :: cdtype ! either T or D LON or LAT
+
+    INTEGER(KIND=4)               :: istatus, iid
+    INTEGER(KIND=4), DIMENSION(1) :: istart, icount
+    !!----------------------------------------------------------------------
+    SELECT CASE ( cdtype )
+    CASE ('T', 't' ) 
+       iid = nid_tim
+    CASE ('D', 'd' )
+       iid = nid_dep
+    CASE ('X', 'x' )
+       iid = nid_lon1d
+    CASE ('Y', 'y' )
+       iid = nid_lat1d
+    END SELECT
+
+    istart(:) = 1
+    icount(:) = kk
+    istatus=NF90_PUT_VAR(kout,iid, ptab, start=istart,count=icount)
+    putvar1d8=istatus
+
+  END FUNCTION putvar1d8
+
   INTEGER(KIND=4) FUNCTION putvar1d_bounds(kout, ptab, kk, cdtype)
     !!---------------------------------------------------------------------
     !!                  ***  FUNCTION putvar1d4  ***
@@ -2732,6 +2811,32 @@ CONTAINS
     istatus = NF90_CLOSE(incid)
 
   END FUNCTION reputvar1d4
+
+  INTEGER(KIND=4) FUNCTION reputvar1d8(cdfile, cdvar, ptab, kk )
+    !!---------------------------------------------------------------------
+    !!                  ***  FUNCTION reputvar1d8  ***
+    !!
+    !! ** Purpose : Copy 1d variable cdfvar in cdfile, an already existing file
+    !!              ptab is the 1d array to write and kk the size of ptab
+    !!
+    !! ** Method  :   
+    !!
+    !!----------------------------------------------------------------------
+    CHARACTER(LEN=*),            INTENT(in) :: cdfile      ! filename
+    CHARACTER(LEN=*),            INTENT(in) :: cdvar       ! variable name
+    REAL(KIND=8), DIMENSION(kk), INTENT(in) :: ptab        ! 1D array to write in file
+    INTEGER(KIND=4),             INTENT(in) :: kk          ! number of elements in ptab
+
+    INTEGER                                 :: istatus, incid, id
+    !!-----------------------------------------------------------
+    istatus = NF90_OPEN(cdfile, NF90_WRITE, incid)
+    istatus = NF90_INQ_VARID(incid, cdvar, id )
+    istatus = NF90_PUT_VAR(incid, id, ptab, start=(/1/), count=(/kk/) )
+    reputvar1d8 = istatus
+    istatus = NF90_CLOSE(incid)
+
+  END FUNCTION reputvar1d8
+
 
   INTEGER(KIND=4) FUNCTION putvar0dt(kout, kid, pvalue, ktime)
     !!---------------------------------------------------------------------
