@@ -11,11 +11,15 @@ MPF90=mpif90
 
 #Use first set of FFLAGS for testing code
 #FFLAGS= -ip -mp1 -fpe0 $(NCDF) -assume byterecl -convert big_endian -parallel -traceback -C
-NC4 = -D key_netcdf4
+#list of key
+#key_netcdf4 # to run cdftools with NETCDF4
+#key_CMIP6   # to run cdftools with CMIP6 output
+NC4 = -D key_netcdf4 -D key_CMIP6
 FFLAGS= -O3 -fpe0 $(NCDF) $(NC4) -assume byterecl -convert big_endian -g -traceback
 
 #-heap-arrays
 LMPI=-lmpich
-OMP=-openmp
+#OMP=-openmp
+OMP=
 
 INSTALL = /project/ujcc/CDFTOOLS_3.0/bin
