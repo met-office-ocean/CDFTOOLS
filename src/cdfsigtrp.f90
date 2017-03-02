@@ -321,7 +321,7 @@ PROGRAM cdfsigtrp
       IF (l_merid ) THEN   ! meridional section at i=iimin=iimax  ! use getvaryz
          tmpm(:,:)    = getvar(cn_fhgr, cn_ve2u,   1, 1, npts, kimin=iimin, kjmin=ijmin+1)
          eu(:)        = tmpm(1,:)  ! metrics varies only horizontally
-         tmpm(:,:)    = getvar(cn_fhgr, cn_vlat2d, 1, 1, npts, kimin=iimin, kjmin=ijmin+1)
+         tmpm(:,:)    = getvar(cn_fhgr, cn_glamu, 1, 1, npts, kimin=iimin, kjmin=ijmin+1)
          rlonlat(:,1) = tmpm(1,:)  ! latitude in this case
 
          ! use zt and zs as temporaty variable for e3w
@@ -332,9 +332,9 @@ PROGRAM cdfsigtrp
              zs( ji,:) = e3w1d(:)
            ENDDO
          ELSE
-           de3(:,:) = getvaryz(cn_fzgr,'e3u', iimin,   npts, npk, kjmin=ijmin+1 )
-           zt( :,:) = getvaryz(cn_fzgr,'e3w', iimin,   npts, npk, kjmin=ijmin+1 )
-           zs( :,:) = getvaryz(cn_fzgr,'e3w', iimin+1, npts, npk, kjmin=ijmin+1 )
+           de3(:,:) = getvaryz(cn_fzgr,cn_ve3u, iimin,   npts, npk, kjmin=ijmin+1 )
+           zt( :,:) = getvaryz(cn_fzgr,cn_ve3w, iimin,   npts, npk, kjmin=ijmin+1 )
+           zs( :,:) = getvaryz(cn_fzgr,cn_ve3w, iimin+1, npts, npk, kjmin=ijmin+1 )
          ENDIF
          
          DO ji=1, npts
@@ -373,7 +373,7 @@ PROGRAM cdfsigtrp
       ELSE                   ! zonal section at j=ijmin=ijmax
          tmpz(:,:)    = getvar(cn_fhgr, cn_ve1v,   1, npts, 1, kimin=iimin, kjmin=ijmin)
          eu(:)        = tmpz(:,1)
-         tmpz(:,:)    = getvar(cn_fhgr, cn_vlon2d, 1, npts, 1, kimin=iimin, kjmin=ijmin)
+         tmpz(:,:)    = getvar(cn_fhgr, cn_glamv, 1, npts, 1, kimin=iimin, kjmin=ijmin)
          rlonlat(:,1) = tmpz(:,1)  ! longitude in this case
 
          ! use zt and zs as temporaty variable for e3w
@@ -384,9 +384,9 @@ PROGRAM cdfsigtrp
              zs( ji,:) = e3w1d(:)
            ENDDO
          ELSE
-           de3(:,:) = getvarxz(cn_fzgr,'e3v', ijmin,   npts, npk, kimin=iimin+1 )
-           zt( :,:) = getvarxz(cn_fzgr,'e3w', ijmin,   npts, npk, kimin=iimin+1 )
-           zs( :,:) = getvarxz(cn_fzgr,'e3w', ijmin+1, npts, npk, kimin=iimin+1 )
+           de3(:,:) = getvarxz(cn_fzgr,cn_ve3v, ijmin,   npts, npk, kimin=iimin+1 )
+           zt( :,:) = getvarxz(cn_fzgr,cn_ve3w, ijmin,   npts, npk, kimin=iimin+1 )
+           zs( :,:) = getvarxz(cn_fzgr,cn_ve3w, ijmin+1, npts, npk, kimin=iimin+1 )
          ENDIF
          
          DO ji=1, npts

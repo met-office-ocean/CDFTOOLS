@@ -352,9 +352,9 @@ PROGRAM cdfzonalmean
   IF ( lndep_in ) ik = npk   ! some model are numbered from the bottom
   zmask(1,:,:) = getvar(cn_fmsk, cv_msk, ik, npiglo, npjglo)
   IF ( cf_basins /= 'none' ) THEN
-     zmask(2,:,:) = getvar(cf_basins, 'tmaskatl', ik, npiglo, npjglo )
-     zmask(4,:,:) = getvar(cf_basins, 'tmaskind', ik, npiglo, npjglo )
-     zmask(5,:,:) = getvar(cf_basins, 'tmaskpac', ik, npiglo, npjglo )
+     zmask(2,:,:) = getvar(cf_basins, cn_vatlmsk, ik, npiglo, npjglo )
+     zmask(4,:,:) = getvar(cf_basins, cn_vindmsk, ik, npiglo, npjglo )
+     zmask(5,:,:) = getvar(cf_basins, cn_vpacmsk, ik, npiglo, npjglo )
      zmask(3,:,:) = zmask(5,:,:) + zmask(4,:,:)
      ! ensure that there are no overlapping on the masks
      WHERE(zmask(3,:,:) > 0 ) zmask(3,:,:) = 1

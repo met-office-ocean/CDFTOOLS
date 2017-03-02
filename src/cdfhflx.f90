@@ -178,9 +178,9 @@ PROGRAM cdfhflx
   zmask(1,:,:)= getvar(cn_fmsk, 'vmask', 1, npiglo, npjglo)
 
   IF (lglo) THEN
-     zmask(2,:,:) = getvar(cn_fbasins, 'tmaskatl', 1, npiglo, npjglo)
-     zmask(4,:,:) = getvar(cn_fbasins, 'tmaskind', 1, npiglo, npjglo)
-     zmask(5,:,:) = getvar(cn_fbasins, 'tmaskpac', 1, npiglo, npjglo)
+     zmask(2,:,:) = getvar(cn_fbasins, cn_vatlmsk, 1, npiglo, npjglo)
+     zmask(4,:,:) = getvar(cn_fbasins, cn_vindmsk, 1, npiglo, npjglo)
+     zmask(5,:,:) = getvar(cn_fbasins, cn_vpacmsk, 1, npiglo, npjglo)
      zmask(3,:,:) = zmask(5,:,:) + zmask(4,:,:)
      ! ensure that there are no overlapping on the masks
      WHERE(zmask(3,:,:) > 0 ) zmask(3,:,:) = 1
