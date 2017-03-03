@@ -82,7 +82,7 @@ MODULE modCdfNames
   CHARACTER(LEN=256) :: cn_vovecrtz2='vovecrtz_sqd' !: squared vertical velocity
   CHARACTER(LEN=256) :: cn_sossheig='sossheig' !: Sea Surface Height
   CHARACTER(LEN=256) :: cn_sossheig2='sossheig_sqd' !: Sea Surface Height
-  CHARACTER(LEN=256) :: cn_somxldep='mlotst'   !: Mixed layer depth
+  CHARACTER(LEN=256) :: cn_somxldep='somxl010' !: Mixed layer depth
   CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)
   CHARACTER(LEN=256) :: cn_somxlt02='somxlt02' !: Mixed layer depth (temperature criterium)
   CHARACTER(LEN=256) :: cn_sozotaux='sozotaux' !: Zonal wind stress
