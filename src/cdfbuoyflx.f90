@@ -92,10 +92,12 @@ PROGRAM cdfbuoyflx
 
   !!  Read command line and output usage message if not compliant.
   narg= iargc()
-  #if key_CMIP6
-  PRINT *, 'cdfbuoyflx is not working yet with CMIP6 output'
-  STOP 99
-  #endif
+
+  IF (TRIM(cn_output) == 'CMIP6') THEN
+      PRINT *, 'cdfbuoyflx is not working yet with CMIP6 output'
+      STOP 99
+  END IF
+
   IF ( narg == 0 ) THEN
      PRINT *,' usage : cdfbuoyflx  -t T-file [-r RNF-file] [-f FLX-file ] [-sss SSS-name]'
      PRINT *,'     ... [-sst SST-name] [-nc4] [-o output_file]  [-short ]'

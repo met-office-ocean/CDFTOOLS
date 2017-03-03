@@ -1,3 +1,5 @@
+  CHARACTER(LEN=256) :: cn_output = 'CMIP6'  
+
   ! Dimension name : cn_. [ 1 letter only ]
   CHARACTER(LEN=256) :: cn_x='x'          !: longitude, I dimension
   CHARACTER(LEN=256) :: cn_y='y'          !: latitude,  J dimension

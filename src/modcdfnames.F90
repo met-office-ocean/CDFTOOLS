@@ -13,6 +13,8 @@ MODULE modCdfNames
 #if defined key_CMIP6
   INCLUDE 'modcdfnames_CMIP6.h90'
 #else
+  CHARACTER(LEN=256) :: cn_output = 'default'
+
   ! Dimension name : cn_. [ 1 letter only ]
   CHARACTER(LEN=256) :: cn_x='x'               !: longitude, I dimension
   CHARACTER(LEN=256) :: cn_y='y'               !: latitude,  J dimension
