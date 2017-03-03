@@ -54,13 +54,17 @@
   ! Variable name  : cn_v... [ starts with cn_v ]
   CHARACTER(LEN=256) :: cn_votemper='thetao'   !: temperature
   CHARACTER(LEN=256) :: cn_vosaline='so'       !: salinity
+  CHARACTER(LEN=256) :: cn_votemper2='thetao_sqd' !: squared temperature
+  CHARACTER(LEN=256) :: cn_vosaline2='so_sqd'  !: squared salinity
   CHARACTER(LEN=256) :: cn_vozocrtx='uo'       !: zonal velocity
   CHARACTER(LEN=256) :: cn_vomecrty='vo'       !: meridional velocity
   CHARACTER(LEN=256) :: cn_vozocrtx2='u2o'     !: squared velocity
   CHARACTER(LEN=256) :: cn_vomecrty2='v2o'     !: squared velocity
   CHARACTER(LEN=256) :: cn_vomeeivv='vomeeivv' !: meridional Eddy Induced Velocity ! NOT A CMIP6 VARIABLE (only eiv transport asked)
   CHARACTER(LEN=256) :: cn_vovecrtz='wo'       !: vertical velocity
+  CHARACTER(LEN=256) :: cn_vovecrtz2='w2o'     !: squared vertical velocity
   CHARACTER(LEN=256) :: cn_sossheig='zos'      !: Dynamic Sea Surface Height
+  CHARACTER(LEN=256) :: cn_sossheig2='zossq'   !: Squared Dynamic Sea Surface Height
   CHARACTER(LEN=256) :: cn_somxldep='mlotst'   !: Mixed layer depth
   CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)      
   CHARACTER(LEN=256) :: cn_somxlt02='somxlt02' !: Mixed layer depth (temperature criterium)

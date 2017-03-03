@@ -404,13 +404,13 @@ PROGRAM cdfconvert
 
   IF ( lexist ) THEN
   ipk(jvar)      = npk
-  stypvar(jvar)%cname             = TRIM(cn_vozocrtx)//'_sqd'
+  stypvar(jvar)%cname             = TRIM(cn_vozocrtx2)
   stypvar(jvar)%cunits            = 'm2/s2'
   stypvar(jvar)%rmissing_value    = 0.
   stypvar(jvar)%valid_min         = 0.
   stypvar(jvar)%valid_max         = 100.
   stypvar(jvar)%clong_name        = 'MS_Zonal_Velocity'
-  stypvar(jvar)%cshort_name       = TRIM(cn_vozocrtx)//'_sqd'
+  stypvar(jvar)%cshort_name       = TRIM(cn_vozocrtx2)
   stypvar(jvar)%conline_operation = 'N/A'
   stypvar(jvar)%caxis             = 'TZYX'
   ENDIF
@@ -490,13 +490,13 @@ PROGRAM cdfconvert
 
   IF ( lexist ) THEN
   ipk(jvar)                       = npk
-  stypvar(jvar)%cname             = TRIM(cn_vomecrty)//'_sqd'
+  stypvar(jvar)%cname             = TRIM(cn_vomecrty2)
   stypvar(jvar)%cunits            = 'm2/s2'
   stypvar(jvar)%rmissing_value    = 0.
   stypvar(jvar)%valid_min         = 0.
   stypvar(jvar)%valid_max         = 100.
   stypvar(jvar)%clong_name        = 'MS_Meridional_Velocity'
-  stypvar(jvar)%cshort_name       = TRIM(cn_vomecrty)//'_sqd'
+  stypvar(jvar)%cshort_name       = TRIM(cn_vomecrty2)
   stypvar(jvar)%conline_operation = 'N/A'
   stypvar(jvar)%caxis             = 'TZYX'
   ENDIF

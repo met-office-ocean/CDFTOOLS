@@ -240,8 +240,8 @@ PROGRAM cdfeke
       uc(:,:) = getvar(cf_ufil,  cn_vozocrtx,               jk, npiglo, npjglo, ktime=jt )
       vc(:,:) = getvar(cf_vfil,  cn_vomecrty,               jk, npiglo, npjglo, ktime=jt )
       IF ( leke ) THEN
-        u2(:,:) = getvar(cf_u2fil, TRIM(cn_vozocrtx)//'_sqd', jk ,npiglo, npjglo, ktime=jt )
-        v2(:,:) = getvar(cf_v2fil, TRIM(cn_vomecrty)//'_sqd', jk ,npiglo, npjglo, ktime=jt )
+        u2(:,:) = getvar(cf_u2fil, TRIM(cn_vozocrtx2), jk ,npiglo, npjglo, ktime=jt )
+        v2(:,:) = getvar(cf_v2fil, TRIM(cn_vomecrty2), jk ,npiglo, npjglo, ktime=jt )
       ENDIF
 
       ua = 0. ; va = 0. ; eke(:,:) = 0.

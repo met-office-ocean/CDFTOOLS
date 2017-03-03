@@ -48,7 +48,8 @@ PROGRAM cdfstdevw
   !!----------------------------------------------------------------------
   CALL ReadCdfNames()
 
-  cv_in = cn_vovecrtz
+  cv_in  = cn_vovecrtz
+  cv_in2 = cn_vovecrtz2
 
   narg= iargc()
   IF ( narg == 0 ) THEN
@@ -138,7 +139,6 @@ PROGRAM cdfstdevw
   ierr  = createvar   (ncout,  stypvaro, 1,      ipko,   id_varout , ld_nc4=lnc4 )
   ierr  = putheadervar(ncout,  cf_in,    npiglo, npjglo, npk       )
 
-  cv_in2 = TRIM(cv_in)//'_sqd'
   DO jt = 1, npt
      DO jk = 1, npk
         zvbar(:,:) = getvar(cf_in,  cv_in,  jk, npiglo, npjglo, ktime=jt)
