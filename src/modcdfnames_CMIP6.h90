@@ -58,14 +58,15 @@
   CHARACTER(LEN=256) :: cn_vomecrty='vo'       !: meridional velocity
   CHARACTER(LEN=256) :: cn_vozocrtx2='u2o'     !: squared velocity
   CHARACTER(LEN=256) :: cn_vomecrty2='v2o'     !: squared velocity
-  CHARACTER(LEN=256) :: cn_vomeeivv='vomeeivv' !: meridional Eddy Induced Velocity
-  CHARACTER(LEN=256) :: cn_vovecrtz='vovecrtz' !: vertical velocity
-  CHARACTER(LEN=256) :: cn_sossheig='sossheig' !: Sea Surface Height
-  CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)
+  CHARACTER(LEN=256) :: cn_vomeeivv='vomeeivv' !: meridional Eddy Induced Velocity ! NOT A CMIP6 VARIABLE (only eiv transport asked)
+  CHARACTER(LEN=256) :: cn_vovecrtz='wo'       !: vertical velocity
+  CHARACTER(LEN=256) :: cn_sossheig='zos'      !: Dynamic Sea Surface Height
+  CHARACTER(LEN=256) :: cn_somxldep='mlotst'   !: Mixed layer depth
+  CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)      
   CHARACTER(LEN=256) :: cn_somxlt02='somxlt02' !: Mixed layer depth (temperature criterium)
-  CHARACTER(LEN=256) :: cn_sozotaux='sozotaux' !: Zonal wind stress
+  CHARACTER(LEN=256) :: cn_sozotaux='tauuo'    !: Zonal wind stress
 
-  CHARACTER(LEN=256) :: cn_sohefldo='sohefldo' !: Total Heat FLux
+  CHARACTER(LEN=256) :: cn_sohefldo='hfds'     !: Total Heat FLux
   CHARACTER(LEN=256) :: cn_solhflup='solhflup' !: Latent Heat FLux 
   CHARACTER(LEN=256) :: cn_sosbhfup='sosbhfup' !: Sensible heat Flux
   CHARACTER(LEN=256) :: cn_solwfldo='solwfldo' !: Long Wave downward Heat Flux
@@ -97,7 +98,11 @@
   CHARACTER(LEN=256) :: cn_vomevt='vto'        !: product V x T at V point
   CHARACTER(LEN=256) :: cn_vozous='uso'        !: product U x S at U point
   CHARACTER(LEN=256) :: cn_vomevs='vso'        !: product V x S at V point
-  CHARACTER(LEN=256) :: cn_sozoutrp='sozoutrp' !: vertically integrated trp at U point
+  CHARACTER(LEN=256) :: cn_sozout='sozout'     !: product U x T at U point
+  CHARACTER(LEN=256) :: cn_somevt='somevt'     !: product V x T at V point
+  CHARACTER(LEN=256) :: cn_sozous='sozous'     !: product U x S at U point
+  CHARACTER(LEN=256) :: cn_somevs='somevs'     !: product V x S at V point
+  CHARACTER(LEN=256) :: cn_sozoutrp='umo_vint' !: vertically integrated trp at U point
   CHARACTER(LEN=256) :: cn_somevtrp='somevtrp' !: vertically integrated trp at V point
   CHARACTER(LEN=256) :: cn_vouv='vouv'         !: product U x V at T point
 
@@ -132,11 +137,11 @@
   INTEGER(KIND=4) :: nn_sqdvar = 4
   INTEGER(KIND=4), PRIVATE :: ji
   CHARACTER(LEN=15), DIMENSION(jp_sqdvarmax) :: cn_sqdvar = &
-      & (/'vozocrtx','vomecrty','vovecrtz','sossheig',('        ', ji=jp_sqdvarmax-5,jp_sqdvarmax) /)
+      & (/'uo','vo','wo','zos',('        ', ji=jp_sqdvarmax-5,jp_sqdvarmax) /)
 
   ! variables eligible for 3rd moment computation when performing cdfmoy
   INTEGER(KIND=4), PARAMETER :: jp_cubvarmax=10
   INTEGER(KIND=4) :: nn_cubvar = 2
   CHARACTER(LEN=15), DIMENSION(jp_cubvarmax) :: cn_cubvar = &
-      & (/'sossheig','votemper',('        ', ji=3,jp_cubvarmax) /)
+      & (/'zos','thetao',('        ', ji=3,jp_cubvarmax) /)
 

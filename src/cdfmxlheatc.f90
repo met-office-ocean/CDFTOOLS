@@ -150,7 +150,7 @@ PROGRAM cdfmxlheatc
   DO jt=1,npt
      dmxlheatc(:,:) = 0.d0
      dvol           = 0.d0
-     zmxl( :,:) = getvar(cf_tfil, cn_somxl010, 1, npiglo, npjglo, ktime=jt)
+     zmxl( :,:) = getvar(cf_tfil, cn_somxldep, 1, npiglo, npjglo, ktime=jt)
      DO jk = 1, npk
         ! Get temperatures at jk
         zt(   :,:) = getvar(cf_tfil, cn_votemper, jk, npiglo, npjglo, ktime=jt)

@@ -162,7 +162,7 @@ PROGRAM cdfheatc
      dvol = 0.d0
      dsum = 0.d0
      PRINT * ,'TIME : ', tim(jt)
-     IF (mxloption /= 0) rmxldep(:,:) = getvar(cf_tfil, cn_somxl010, 1, npiglo, npjglo, ktime=jt)
+     IF (mxloption /= 0) rmxldep(:,:) = getvar(cf_tfil, cn_somxldep, 1, npiglo, npjglo, ktime=jt)
 
      DO jk = 1,nvpk
         ik = jk + ikmin -1
