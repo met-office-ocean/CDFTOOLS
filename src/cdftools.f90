@@ -89,7 +89,7 @@ CONTAINS
 
     IF ( .NOT. ALLOCATED (dl_glam) ) THEN 
 
-    IF (chkfile (clcoo) ) STOP ! missing file
+    IF (chkfile (clcoo) ) STOP 99 ! missing file
 
     ipiglo= getdim (clcoo, cn_x)
     ipjglo= getdim (clcoo, cn_y)

@@ -70,7 +70,7 @@ PROGRAM cdfmean
   CHARACTER(LEN=20)                          :: cv_e3, cv_e31d     ! vertical metrics names
   CHARACTER(LEN=20)                          :: cv_msk             ! mask variable name
   CHARACTER(LEN=256)                         :: cf_in              ! input file name
-  CHARACTER(LEN=256)                         :: cf_outsuff         ! output file suffix
+  CHARACTER(LEN=256)                         :: cf_outpref         ! output file prefix
   CHARACTER(LEN=256)                         :: cf_out   = 'cdfmean.txt' ! ASCII output file for mean
   CHARACTER(LEN=256)                         :: cf_var   = 'cdfvar.txt'  ! ASCII output file for variance
   CHARACTER(LEN=256)                         :: cf_ncout = 'cdfmean.nc'  ! NCDF output file
@@ -101,7 +101,7 @@ PROGRAM cdfmean
   narg = iargc()
   IF ( narg == 0 ) THEN
      PRINT *,' usage : cdfmean  IN-file IN-var T|U|V|F|W [imin imax jmin jmax kmin kmax]'
-     PRINT *,'       ... [-full] [-var] [-zeromean] [-out_suff OUT-file-suffix]'
+     PRINT *,'       ... [-full] [-var] [-zeromean] [-out_pref OUT-file-prefix]'
      PRINT *,'       ... [-basins n_basins basin_names..]'
      PRINT *,'      '
      PRINT *,'     PURPOSE :'
@@ -124,14 +124,15 @@ PROGRAM cdfmean
      PRINT *,'                   partial steps.'
      PRINT *,'       [ -var ]  : also compute the spatial variance of cdfvar '
      PRINT *,'       [ -zeromean ] : create a file with cdfvar having a zero spatial mean.'
-     PRINT *,'       [ -out_suff OUT-file-suffix ] : specify SUFFIX (+ directory) of the output files'
+     PRINT *,'       [ -out_pref OUT-file-prefix ] : specify PREFIX (which may include a directory name)'
+     PRINT *,'                                       of the output files'
      PRINT *,'       [ -basins n_basins basin_names.. ] : specify basins in ',TRIM(cn_fbasins),' to be used'
      PRINT *,'      '
      PRINT *,'     REQUIRED FILES :'
      PRINT *,'       Files ', TRIM(cn_fhgr),', ', TRIM(cn_fzgr),', ', TRIM(cn_fmsk)
      PRINT *,'      '
      PRINT *,'     OPTIONAL FILES :'
-     PRINT *,'       File ',TRIM(cn_fbasins),'; if not available only the global domain is calculated for'
+     PRINT *,'       File ', TRIM(cn_fbasins), ' (if -basins option is used)'
      PRINT *,'      '
      PRINT *,'     OUTPUT : '
      PRINT *,'       - netcdf file : ', TRIM(cf_ncout)
@@ -142,7 +143,7 @@ PROGRAM cdfmean
      PRINT *,'       - ASCII files : ', TRIM(cf_out) 
      PRINT *,'                       [ ',TRIM(cf_var),', in case of -var ]'
      PRINT *,'       - all output on ASCII files are also sent to standard output.'
-     STOP
+     STOP 99
   ENDIF
 
   ! Open standard output with recl=256 to avoid wrapping of long lines (ifort)
@@ -161,23 +162,26 @@ PROGRAM cdfmean
         lvar = .true. 
      CASE ('-zeromean' )
         lzeromean = .true.
-     CASE ('-out_suff')
+     CASE ('-out_pref')
         IF ( ijarg > narg ) THEN
-            PRINT *, '  ERROR: provide an argument to -out_suff'
-            STOP
+            PRINT *, '  ERROR: provide an argument to -out_pref'
+            STOP 99
         ENDIF
-        CALL getarg (ijarg, cf_outsuff) ; ijarg = ijarg + 1 
-        cf_out   = TRIM(cf_outsuff)//TRIM(cf_out)
-        cf_var   = TRIM(cf_outsuff)//TRIM(cf_var)
-        cf_ncout = TRIM(cf_outsuff)//TRIM(cf_ncout)
-        cf_zerom = TRIM(cf_outsuff)//TRIM(cf_zerom)
+        CALL getarg (ijarg, cf_outpref) ; ijarg = ijarg + 1 
+        cf_out   = TRIM(cf_outpref)//TRIM(cf_out)
+        cf_var   = TRIM(cf_outpref)//TRIM(cf_var)
+        cf_ncout = TRIM(cf_outpref)//TRIM(cf_ncout)
+        cf_zerom = TRIM(cf_outpref)//TRIM(cf_zerom)
      CASE ('-basins')
         lbas = .NOT. chkfile (cn_fbasins)
-        IF ( .NOT. lbas ) STOP
+        IF ( .NOT. lbas ) THEN
+            PRINT *, '  ERROR: -basins is used but "'//TRIM(cn_fbasins)//'" does not exist'
+            STOP 99
+        ENDIF
 
         IF ( ijarg > narg ) THEN
             PRINT *, '  ERROR: provide arguments to -basins'
-            STOP
+            STOP 99
         ENDIF
         CALL getarg (ijarg, cldum) ; ijarg = ijarg + 1
         READ(cldum,*) nbasin
@@ -186,7 +190,7 @@ PROGRAM cdfmean
         DO jbasin = 1, nbasin
            IF ( ijarg > narg ) THEN
                PRINT *, '  ERROR: n_basins must match the number of basin names provided'
-               STOP
+               STOP 99
            ENDIF
            CALL getarg (ijarg, cbasins(jbasin)) ; ijarg = ijarg + 1
         END DO
@@ -204,7 +208,7 @@ PROGRAM cdfmean
         CASE ( 9 ) ; READ(cldum,*) ikmax
         CASE DEFAULT 
           PRINT *, '  ERROR : Too many arguments ...'
-          STOP
+          STOP 99
         END SELECT
      END SELECT
   END DO
@@ -213,7 +217,7 @@ PROGRAM cdfmean
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_in  ) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   cv_dep   = 'none'
   npiglo = getdim (cf_in, cn_x)
@@ -304,7 +308,7 @@ PROGRAM cdfmean
      cv_dep   = cn_gdepw
   CASE DEFAULT
      PRINT *, 'this type of variable is not known :', TRIM(ctype)
-     STOP
+     STOP 99
   END SELECT
 
   e1(:,:) = getvar  (cn_fhgr, cv_e1,  1,  npiglo, npjglo, kimin=iimin, kjmin=ijmin)
