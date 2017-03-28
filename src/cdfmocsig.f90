@@ -158,7 +158,7 @@ PROGRAM cdfmocsig
      PRINT *,'       is used and only ',TRIM( cn_zomsfglo),' is produced.'
      PRINT *,'       If option -isodep is used, each MOC variable is complemented by a iso'
      PRINT *,'       variable, giving the zonal mean of ispycnal depth (e.g.',TRIM(cn_zoisoglo),').'
-     STOP
+     STOP 99
   ENDIF
 
   cglobal = 'Partial step computation'
