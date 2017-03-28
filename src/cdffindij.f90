@@ -97,7 +97,7 @@ PROGRAM cdffindij
      PRINT *,'      '
      PRINT *,'     OUTPUT : '
      PRINT *,'       Output is done on standard output.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1 ; ireq = 0
@@ -119,7 +119,7 @@ PROGRAM cdffindij
        CASE ( 3 ) ; READ(cldum,*) ymin
        CASE ( 4 ) ; READ(cldum,*) ymax
        CASE DEFAULT 
-         PRINT *,' Too many arguments !' ; STOP
+         PRINT *,' Too many arguments !' ; STOP 99
        END SELECT
     END SELECT
   END DO

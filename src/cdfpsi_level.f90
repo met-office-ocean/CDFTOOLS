@@ -63,7 +63,7 @@ PROGRAM cdfpsi_level
      PRINT *,' Files mesh_hgr.nc, mesh_zgr.nc ,mask.nc must be in te current directory'
      PRINT *,' Output on psi_level.nc, variables sobarstf on f-points'
      PRINT *,' Default works well for a global ORCA grid. use V 3rdargument for North Atlantic'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cfileu  )

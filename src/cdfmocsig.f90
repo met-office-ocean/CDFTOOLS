@@ -200,7 +200,8 @@ PROGRAM cdfmocsig
              CASE DEFAULT                 ; READ(cldum,*) pref
              END SELECT
         CASE DEFAULT
-           STOP 'ERROR : Too many arguments ...'
+           PRINT *, 'ERROR : Too many arguments ...'
+           STOP 99
         END SELECT
      END SELECT
   END DO
@@ -211,7 +212,7 @@ PROGRAM cdfmocsig
   lchk = lchk .OR. chkfile ( cn_fmsk )
   lchk = lchk .OR. chkfile ( cf_vfil )
   lchk = lchk .OR. chkfile ( cf_tfil )
-  IF ( lchk ) STOP  ! missing file(s)
+  IF ( lchk ) STOP 99  ! missing file(s)
 
   ! re-use lchk for binning control : TRUE if no particular binning specified
   lchk = lbin(1) .OR. lbin(2) .OR. lbin(3) 
@@ -270,7 +271,7 @@ PROGRAM cdfmocsig
           PRINT *,' This value of depth_ref (',pref,') is not implemented as standard'
           PRINT *,' You must use the -sigmin, -sigstp and -nbins options to precise'
           PRINT *,' the density bining you want to use.'
-          STOP
+          STOP 99
        END SELECT
      ENDIF
   ENDIF

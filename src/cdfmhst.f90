@@ -144,7 +144,7 @@ PROGRAM cdfmhst
      PRINT *,'                       ', TRIM(cv_zomht),cbasin(jbasins),' : Meridional Heat Transport'
      PRINT *,'                     [ ', TRIM(cv_zomst),cbasin(jbasins),' : Meridional Salt Transport ]'
               END DO
-     STOP
+     STOP 99
   ENDIF
 
   npvar   = 1    ! default value ( no MST output)
@@ -170,7 +170,7 @@ PROGRAM cdfmhst
 
   ! security check
   SELECT CASE (ifile )
-  CASE ( 0 ) ; PRINT *, ' You must provide at least 1 file name (VT) ' ; STOP
+  CASE ( 0 ) ; PRINT *, ' You must provide at least 1 file name (VT) ' ; STOP 99
   CASE ( 1 ) ; lsepf = .false.; 
   CASE ( 2 ) ; lsepf = .true. ; cf_vfil = cf_vtfil ; cf_sfil = cf_tfil
   CASE ( 3 ) ; lsepf = .true. ; cf_vfil = cf_vtfil 
@@ -186,7 +186,7 @@ PROGRAM cdfmhst
      lchk = lchk .OR. chkfile( cf_sfil)
   ENDIF
 
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   ! check for sub basin file and set appropriate variables
   IF ( .NOT. chkfile(cn_fbasins ) ) THEN

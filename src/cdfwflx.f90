@@ -72,7 +72,7 @@ PROGRAM cdfwflx
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'       variables : soevap, soprecip, sorunoff, sowadmp, sowaflux'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_tfil)
@@ -80,7 +80,7 @@ PROGRAM cdfwflx
 
   lchk = lchk .OR. chkfile ( cf_tfil)
   lchk = lchk .OR. chkfile ( cf_rnf )
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   npiglo= getdim (cf_tfil, cn_x)
   npjglo= getdim (cf_tfil, cn_y)

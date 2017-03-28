@@ -46,7 +46,7 @@ PROGRAM cdfprobe
      PRINT *,'     OUTPUT : '
      PRINT *,'       2 columns ( time , value ) ASCII output on display'
      PRINT *,'       time are given in days since the begining of the run.'
-     STOP
+     STOP 99
   ENDIF
 
   ! Browse command line
@@ -55,7 +55,7 @@ PROGRAM cdfprobe
   CALL getarg(3, cldum ) ; READ(cldum,*) ijlook
   CALL getarg(4, cv_in ) 
 
-  IF ( chkfile(cf_in) ) STOP ! missing file
+  IF ( chkfile(cf_in) ) STOP 99 ! missing file
 
   IF ( narg == 5 ) THEN
      CALL getarg(5, cldum) ;  READ(cldum,*) ilevel

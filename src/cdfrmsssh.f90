@@ -80,7 +80,7 @@ PROGRAM cdfrmsssh
      PRINT *,'      '
      PRINT *,'     SEA ALSO :'
      PRINT *,'       cdfstd, cdfstdevw, cdfstdevts.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1  ; ixtra = 0
@@ -95,7 +95,7 @@ PROGRAM cdfrmsssh
         CASE ( 1 ) ; cf_in  = cldum
         CASE ( 2 ) ; cf_in2 = cldum
         CASE DEFAULT
-           PRINT *, ' Too many variables ' ; STOP
+           PRINT *, ' Too many variables ' ; STOP 99
         END SELECT
      END SELECT
   ENDDO
@@ -103,7 +103,7 @@ PROGRAM cdfrmsssh
   ! check existence of files
   lchk = lchk .OR. chkfile(cf_in  )
   lchk = lchk .OR. chkfile(cf_in2 )
-  IF (lchk ) STOP ! missing file
+  IF (lchk ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in, cn_x)
   npjglo = getdim (cf_in, cn_y)

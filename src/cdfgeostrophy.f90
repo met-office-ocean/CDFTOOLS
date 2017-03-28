@@ -153,7 +153,7 @@ PROGRAM cdfgeostrophy
      PRINT *,'           variables : ', TRIM(cn_vozocrtx)
      PRINT *,'       - netcdf file : ', TRIM(cf_vout) 
      PRINT *,'           variables : ', TRIM(cn_vomecrty)
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_tfil)
@@ -162,7 +162,7 @@ PROGRAM cdfgeostrophy
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_tfil) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   npiglo = getdim(cf_tfil, cn_x)
   npjglo = getdim(cf_tfil, cn_y)
