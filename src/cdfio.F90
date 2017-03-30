@@ -409,7 +409,7 @@ CONTAINS
              iidims(1) = nid_t 
           ELSE
              PRINT *,' ERROR: ipk = ',kpk(jv), jv , sdtyvar(jv)%cname
-             STOP 99
+             STOP
           ENDIF
     
           SELECT CASE ( sdtyvar(jv)%cprecision ) ! check the precision of the variable to create
@@ -722,7 +722,7 @@ CONTAINS
     istatus = NF90_INQ_VARID(incid, cdvar, idvar)
     IF ( istatus /= NF90_NOERR ) THEN
        PRINT *, NF90_STRERROR(istatus),' in atted ( inq_varid)'
-       STOP 99
+       STOP
     ENDIF
     istatus = NF90_INQUIRE_ATTRIBUTE(incid, idvar, cdatt, xtype=ityp )
     IF ( istatus /= NF90_NOERR ) THEN
@@ -737,7 +737,7 @@ CONTAINS
          atted_char = istatus
        ELSE
          PRINT *, ' Mismatch in attribute type in atted_char'
-         STOP 99
+         STOP
        ENDIF
     ENDIF
     istatus=NF90_CLOSE(incid)
@@ -765,7 +765,7 @@ CONTAINS
     istatus = NF90_INQ_VARID(incid, cdvar, idvar)
     IF ( istatus /= NF90_NOERR ) THEN
        PRINT *, NF90_STRERROR(istatus),' in atted ( inq_varid)'
-       STOP 99
+       STOP
     ENDIF
     istatus = NF90_INQUIRE_ATTRIBUTE(incid, idvar, cdatt, xtype=ityp )
     IF ( istatus /= NF90_NOERR ) THEN
@@ -780,7 +780,7 @@ CONTAINS
          atted_r4 = istatus
        ELSE
          PRINT *, ' Mismatch in attribute type in atted_r4'
-         STOP 99
+         STOP
        ENDIF
     ENDIF
     istatus=NF90_CLOSE(incid)
@@ -830,7 +830,7 @@ CONTAINS
             ! Stop if not requesting error code for external handling
             IF ( .NOT. PRESENT(kstatus) ) THEN
               PRINT *,NF90_STRERROR(istatus)
-              PRINT *,' Exact dimension name ', TRIM(cdim_name),' not found in ',TRIM(cdfile) ; STOP 99
+              PRINT *,' Exact dimension name ', TRIM(cdim_name),' not found in ',TRIM(cdfile) ; STOP
             ELSE
               kstatus = istatus
             ENDIF
@@ -1324,31 +1324,31 @@ CONTAINS
 
              istatus=NF90_INQ_VARID (incid,'mbathy', id_var)
              IF ( istatus /=  NF90_NOERR ) THEN
-               PRINT *, 'Problem reading mesh_zgr.nc v3 : no mbathy found !' ; STOP 99
+               PRINT *, 'Problem reading mesh_zgr.nc v3 : no mbathy found !' ; STOP
              ENDIF
              istatus=NF90_GET_VAR(incid,id_var, mbathy, start=(/1,1,1/), count=(/ii,ij,1/) )
              !
              istatus=NF90_INQ_VARID (incid,'e3t_ps', id_var)
              IF ( istatus /=  NF90_NOERR ) THEN
-               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3t_ps found !' ; STOP 99
+               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3t_ps found !' ; STOP
              ENDIF
              istatus=NF90_GET_VAR(incid,id_var,e3t_ps, start=(/1,1,1/), count=(/ii,ij,1/) )
              !
              istatus=NF90_INQ_VARID (incid,'e3w_ps', id_var)
              IF ( istatus /=  NF90_NOERR ) THEN
-               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3w_ps found !' ; STOP 99
+               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3w_ps found !' ; STOP
              ENDIF
              istatus=NF90_GET_VAR(incid,id_var,e3w_ps, start=(/1,1,1/), count=(/ii,ij,1/) )
              !
              istatus=NF90_INQ_VARID (incid,'e3t_0', id_var)
              IF ( istatus /=  NF90_NOERR ) THEN
-               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3t_0 found !' ; STOP 99
+               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3t_0 found !' ; STOP
              ENDIF
              istatus=NF90_GET_VAR(incid,id_var,e3t_0, start=(/1,1/), count=(/ik0,1/) )
              !
              istatus=NF90_INQ_VARID (incid,'e3w_0', id_var)
              IF ( istatus /=  NF90_NOERR ) THEN
-               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3w_0 found !' ; STOP 99
+               PRINT *, 'Problem reading mesh_zgr.nc v3 : no e3w_0 found !' ; STOP
              ENDIF
              istatus=NF90_GET_VAR(incid,id_var,e3w_0, start=(/1,1/), count=(/ik0,1/) )
              DO ji=1,ii
@@ -1569,7 +1569,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvar for ', TRIM(clvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -1674,7 +1674,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvar3d for ', TRIM(cdvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -1779,7 +1779,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvar3dt for ', TRIM(cdvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -1889,7 +1889,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvar4d for ', TRIM(cdvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -1994,7 +1994,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvarxz for ', TRIM(cdvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -2100,7 +2100,7 @@ CONTAINS
     IF ( istatus /= 0 ) THEN
        PRINT *,' Problem in getvaryz for ', TRIM(cdvar)
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     ! Caution : order does matter !
@@ -2282,7 +2282,7 @@ CONTAINS
        PRINT *,' Problem in getvare3 for ', TRIM(cdvar)
        PRINT *,TRIM(cdfile), kk
        CALL ERR_HDL(istatus)
-       STOP 99
+       STOP
     ENDIF
 
     istatus=NF90_CLOSE(incid)
@@ -2395,7 +2395,7 @@ CONTAINS
              END DO
              IF (jj == jpdep +1 ) THEN
                 PRINT *,' No depth variable found in ', TRIM(cdfile)
-                STOP 99
+                STOP
              ENDIF
           ENDIF
        ENDIF
@@ -2780,7 +2780,7 @@ CONTAINS
        iid = nid_timb
     CASE DEFAULT
        PRINT *, 'E R R O R: CASE ',cdtype,' do not coded'
-       STOP 99
+       STOP
     END SELECT
 
     istart(:) = 1
@@ -2969,7 +2969,7 @@ CONTAINS
     IF (kstatus /=  NF90_NOERR ) THEN
        PRINT *, 'ERROR in NETCDF routine, status=',kstatus
        PRINT *,NF90_STRERROR(kstatus)
-       STOP 99
+       STOP
     END IF
 
   END SUBROUTINE ERR_HDL
@@ -3045,7 +3045,7 @@ CONTAINS
     ELSE 
        PRINT *,'  ERROR : variable ',TRIM(cdvar),' has ', indim, &
             &       ' dimensions !. Only 3 or 4 supported'
-       STOP 99
+       STOP
     ENDIF
 
     ! convert to physical values
@@ -3233,7 +3233,7 @@ CONTAINS
           IF ( GetNcFile%idimids(jvar,4) /= GetNcFile%iunlim ) THEN
              PRINT *, ' 4D variables must have an unlimited time dimension ...'
              PRINT *, ' Cannot process this file :', TRIM(cd_file)
-             STOP 99
+             STOP
           ENDIF
           idt = GetNcFile%idimids(jvar,4) 
        ENDIF
@@ -3247,7 +3247,7 @@ CONTAINS
 
     IF ( idx == -1 .OR. idy == -1 ) THEN 
        PRINT *, ' ERROR : no x, y dimensions found'
-       STOP 99
+       STOP
     ENDIF
 
     ! get dimensions
