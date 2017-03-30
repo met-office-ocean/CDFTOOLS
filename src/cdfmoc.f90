@@ -172,7 +172,7 @@ PROGRAM cdfmoc
      PRINT *,'       traditionally.'
      PRINT *,'       Additional variables are also computed following CLIVAR-GODAE '
      PRINT *,'       reanalysis intercomparison project recommendations. '
-     STOP 99
+     STOP
   ENDIF
 
   cglobal = 'Partial step computation'
@@ -198,7 +198,7 @@ PROGRAM cdfmoc
         CASE ( 4 ) ; cf_ufil = cldum
         CASE DEFAULT
            PRINT*, 'ERROR : Too many arguments ...'
-           STOP 99
+           STOP
         END SELECT
      END SELECT
   END DO
@@ -208,12 +208,12 @@ PROGRAM cdfmoc
   lchk = lchk .OR. chkfile ( cn_fmsk )
   lchk = lchk .OR. chkfile ( cf_vfil )
   IF ( ldec ) lchk = lchk .OR. chkfile ( TRIM(cf_tfil) ) 
-  IF ( lchk ) STOP 99  ! missing file(s)
+  IF ( lchk ) STOP  ! missing file(s)
 
   IF ( lrap ) THEN 
      ! all the work will be done in a separated routine for RAPID-MOCHA section
      CALL rapid_amoc 
-     STOP 99  ! program stops here in this case
+     STOP  ! program stops here in this case
   ENDIF
 
   npiglo = getdim (cf_vfil,cn_x)

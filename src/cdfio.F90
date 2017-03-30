@@ -1089,7 +1089,7 @@ CONTAINS
     IF (  PRESENT (cdep) ) cldep = cdep
 
     ! Note the very important TRIM below : if not, getdim crashes as it never find the correct dim !
-    iipk = getdim(cdfile, TRIM(cldep), kstatus=istatus, ldexact=.false.)
+    iipk = getdim(cdfile, TRIM(cldep), kstatus=istatus)
 
     IF ( istatus /= 0 ) THEN
        PRINT *,' getipk : vertical dim not found ...assume 1'
