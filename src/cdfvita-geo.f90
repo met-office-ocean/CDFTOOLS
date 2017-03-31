@@ -80,7 +80,7 @@ PROGRAM cdfvita_geo
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : sovitua, sovitva, sovitmod, [sovitwa]'
-     STOP
+     STOP 99
   ENDIF
 
   nlev = 0
@@ -110,10 +110,10 @@ PROGRAM cdfvita_geo
 
   ALLOCATE ( ipk(nvar), id_varout(nvar), stypvar(nvar) )
 
-  IF ( chkfile(cf_ufil) .OR. chkfile(cf_vfil) .OR. chkfile(cf_tfil) ) STOP ! missing file
+  IF ( chkfile(cf_ufil) .OR. chkfile(cf_vfil) .OR. chkfile(cf_tfil) ) STOP 99 ! missing file
 
   IF ( lvertical ) THEN 
-     IF ( chkfile(cf_wfil) ) STOP ! missing file
+     IF ( chkfile(cf_wfil) ) STOP 99 ! missing file
   ENDIF
 
   npiglo = getdim (cf_ufil,cn_x)

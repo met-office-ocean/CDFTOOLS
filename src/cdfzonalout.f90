@@ -60,11 +60,11 @@ PROGRAM cdfzonalout
      PRINT *,'     OUTPUT : '
      PRINT *,'        - Standard output,  structured in columns:'
      PRINT *,'             J  LAT  ( zonal mean, var = 1--> nvar) '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_zonal)
-  IF ( chkfile(cf_zonal) ) STOP ! missing file
+  IF ( chkfile(cf_zonal) ) STOP 99 ! missing file
 
   nvarin  = getnvar(cf_zonal)
   ALLOCATE ( cv_names(nvarin), ipki(nvarin), id_varin(nvarin), stypvar(nvarin)  )

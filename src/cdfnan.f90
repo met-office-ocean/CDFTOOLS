@@ -65,7 +65,7 @@ PROGRAM cdfnan
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : input file is rewritten without NaN.' 
      PRINT *,'         variables : same name as input.' 
-     STOP
+     STOP 99
   ENDIF
 
   rabsmax=huge(0.0)
@@ -83,7 +83,7 @@ PROGRAM cdfnan
         cf_inout=TRIM(cldum)
      END SELECT
   END DO
-  IF ( chkfile (cf_inout) )  STOP ! missing file
+  IF ( chkfile (cf_inout) )  STOP 99 ! missing file
 
   npiglo = getdim (cf_inout, cn_x              )
   npjglo = getdim (cf_inout, cn_y              )

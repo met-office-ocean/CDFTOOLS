@@ -69,11 +69,11 @@ PROGRAM cdfbci
      PRINT *,'      '
      PRINT *,'     SEE ALSO :'
      PRINT *,'       cdfmoyuvwt '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_in)
-  IF (chkfile(cf_in) .OR. chkfile (cn_fhgr) ) STOP
+  IF (chkfile(cf_in) .OR. chkfile (cn_fhgr) ) STOP 99
 
   npiglo = getdim(cf_in, cn_x)
   npjglo = getdim(cf_in, cn_y)
@@ -118,7 +118,7 @@ PROGRAM cdfbci
   !test if lev exists
   IF ((npk==0) .AND. (ilev > 0) ) THEN
      PRINT *, 'Problem : npk = 0 and lev > 0 STOP'
-     STOP
+     STOP 99
   END IF
 
   ! create output fileset

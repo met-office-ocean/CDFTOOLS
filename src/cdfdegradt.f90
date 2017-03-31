@@ -105,7 +105,7 @@ PROGRAM cdfdegradt
      PRINT *,'       netcdf file : degraded_cdfvar.nc '
      PRINT *,'       netcdf file : flsdc.nc'
      PRINT *,'      '
-    STOP
+    STOP 99
   ENDIF
 
   cglobal = 'Partial step computation'
@@ -127,7 +127,7 @@ PROGRAM cdfdegradt
         CASE ( 6 ) ; READ(cldum,*) ijmin
         CASE DEFAULT
           PRINT *, ' ERROR : Too many arguments ...'
-          STOP
+          STOP 99
         END SELECT
      END SELECT
   END DO
@@ -136,7 +136,7 @@ PROGRAM cdfdegradt
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_tfil) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   cv_dep = 'none'
   npiglo = getdim (cf_tfil, cn_x)
@@ -163,11 +163,11 @@ PROGRAM cdfdegradt
   IF (npk   == 0 ) THEN ; npk = 1;  ENDIF ! no depth dimension ==> 1 level
   IF (iimin < 2 )  THEN
      PRINT *,'iimin value is too low'
-     STOP
+     STOP 99
   END IF
   IF (ijmin  < 2 ) THEN
      PRINT *,'ijmin value is too low'
-     STOP
+     STOP 99
   END IF
   npiglo = ( (npiglo - iimin ) / nri )*nri
   npjglo = ( (npjglo - ijmin ) / nrj )*nrj

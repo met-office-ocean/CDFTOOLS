@@ -98,7 +98,7 @@ PROGRAM cdfsum
      PRINT *,'       Standard output.'
      PRINT *,'       netcdf file : ',TRIM(cf_out),' with 2 variables : vertical profile of sum'
      PRINT *,'                     and 3D sum.'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_in)
@@ -109,12 +109,12 @@ PROGRAM cdfsum
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_in  ) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   IF (narg > 3 ) THEN
      IF ( narg /= 9 ) THEN
         PRINT *, ' ERROR : You must give 6 optional values (imin imax jmin jmax kmin kmax)'
-        STOP
+        STOP 99
      ELSE
         ! input optional iimin iimax ijmin ijmax
         CALL getarg ( 4,cldum) ; READ(cldum,*) iimin
@@ -194,7 +194,7 @@ PROGRAM cdfsum
      cv_dep = cn_gdepw
   CASE DEFAULT
      PRINT *, 'this type of variable is not known :', TRIM(cvartype)
-     STOP
+     STOP 99
   END SELECT
 
   e1(:,:) = getvar  (cn_fhgr, cv_e1, 1, npiglo, npjglo, kimin=iimin, kjmin=ijmin)

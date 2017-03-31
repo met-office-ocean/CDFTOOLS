@@ -71,7 +71,7 @@ PROGRAM cdfvhst
      PRINT *,'     OUTPUT : '
      PRINT *,'         Netcdf file : ',TRIM(cf_out)
      PRINT *,'         Variables : ', TRIM(cn_somevt),', ',TRIM(cn_somevs),', ',TRIM(cn_sozout),' and  ',TRIM(cn_sozous)
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
@@ -85,7 +85,7 @@ PROGRAM cdfvhst
      END SELECT
   END DO
 
-  IF ( chkfile(cf_vtfil) ) STOP ! missing file
+  IF ( chkfile(cf_vtfil) ) STOP 99 ! missing file
 
   npiglo= getdim (cf_vtfil,cn_x )
   npjglo= getdim (cf_vtfil,cn_y )

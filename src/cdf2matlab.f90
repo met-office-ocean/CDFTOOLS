@@ -63,7 +63,7 @@ PROGRAM cdf2matlab
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : same name than in input file.'
-     STOP
+     STOP 99
   ENDIF
   !!
   !! Initialisation from 1st file (all file are assume to have the same geometry)
@@ -71,7 +71,7 @@ PROGRAM cdf2matlab
   CALL getarg (2, cv_in)
   CALL getarg (3, cldum) ; READ(cldum,*) ilev
 
-  IF ( chkfile (cf_in) ) STOP  ! missing file
+  IF ( chkfile (cf_in) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in,cn_x)
   npjglo = getdim (cf_in,cn_y)

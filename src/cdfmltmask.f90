@@ -83,7 +83,7 @@ PROGRAM cdfmltmask
      PRINT *,'       the requested variable masked.'
      PRINT *,'       netcdf file : IN-file_masked unless specified with -o '
      PRINT *,'         variables : IN-var (same as input).'
-     STOP
+     STOP 99
   ENDIF
 
   zspv0 = 0.
@@ -116,7 +116,7 @@ PROGRAM cdfmltmask
     END SELECT
   ENDDO
 
-  IF ( chkfile (cf_in) .OR. chkfile(cf_msk) ) STOP ! missing files
+  IF ( chkfile (cf_in) .OR. chkfile(cf_msk) ) STOP 99 ! missing files
 
   ! append _masked to input file name and copy initial file to new file, which will be modified
   !  using dd more efficient than cp for big files
@@ -200,7 +200,7 @@ PROGRAM cdfmltmask
      cv_msk='polymask'
   CASE DEFAULT
      PRINT *, 'this type of variable is not known :', TRIM(cvartype)
-     STOP
+     STOP 99
   END SELECT
   ENDIF
 

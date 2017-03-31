@@ -143,7 +143,7 @@ PROGRAM cdfmean
      PRINT *,'       - ASCII files : ', TRIM(cf_out) 
      PRINT *,'                       [ ',TRIM(cf_var),', in case of -var ]'
      PRINT *,'       - all output on ASCII files are also sent to standard output.'
-     STOP
+     STOP 99
   ENDIF
 
   ! Open standard output with recl=256 to avoid wrapping of long lines (ifort)
@@ -208,7 +208,7 @@ PROGRAM cdfmean
         CASE ( 9 ) ; READ(cldum,*) ikmax
         CASE DEFAULT 
           PRINT *, '  ERROR : Too many arguments ...'
-          STOP
+          STOP 99
         END SELECT
      END SELECT
   END DO
@@ -217,7 +217,7 @@ PROGRAM cdfmean
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_in  ) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   cv_dep   = 'none'
   npiglo = getdim (cf_in, cn_x)
@@ -308,7 +308,7 @@ PROGRAM cdfmean
      cv_dep   = cn_gdepw
   CASE DEFAULT
      PRINT *, 'this type of variable is not known :', TRIM(ctype)
-     STOP
+     STOP 99
   END SELECT
 
   e1(:,:) = getvar  (cn_fhgr, cv_e1,  1,  npiglo, npjglo, kimin=iimin, kjmin=ijmin)
@@ -440,15 +440,15 @@ PROGRAM cdfmean
 
            IF (dvol2d /= 0 )THEN
               dvmeanout(jk) = dsum2d/dvol2d
-              WRITE(6,*)' Mean value', cpbas, ' at level ',ik,'(',gdep(jk),' m) ',dvmeanout(jk), 'surface = ',dsurf/1.e6,' km^2'
+              WRITE(6,*)' Mean value', TRIM(cpbas), ' at level ',ik,'(',gdep(jk),' m) ',dvmeanout(jk), 'surface = ',dsurf/1.e6,' km^2'
               WRITE(numout,9004) gdep(jk), ik, dvmeanout(jk)
               IF ( lvar ) THEN
                 dvariance(jk) = dvar2d/dvol2d - dvmeanout(jk) * dvmeanout(jk)
-                WRITE(6,*)' Variance value', cpbas, ' at level ',ik,'(',gdep(jk),' m) ',dvariance(jk), 'surface = ',dsurf/1.e6,' km^2'
+                WRITE(6,*)' Variance value', TRIM(cpbas), ' at level ',ik,'(',gdep(jk),' m) ',dvariance(jk), 'surface = ',dsurf/1.e6,' km^2'
                 WRITE(numvar,9004) gdep(jk), ik, dvariance(jk)
               ENDIF
            ELSE
-              WRITE(6,*) ' No points in the water', cpbas, ' at level ',ik,'(',gdep(jk),' m) '
+              WRITE(6,*) ' No points in the water', TRIM(cpbas), ' at level ',ik,'(',gdep(jk),' m) '
               dvmeanout(jk) = 99999.
               IF( lvar ) dvariance(jk) = 99999.
            ENDIF
@@ -469,13 +469,13 @@ PROGRAM cdfmean
         IF ( lbas ) cpbas = ' for basin '//cbasins(jbasin)
 
         dvmeanout3d(jbasin,jt) = dsum(jbasin) / dvol(jbasin)
-        WRITE(6,*) ' Mean value over the ocean', cpbas, ': ', dvmeanout3d(jbasin,jt), jt
+        WRITE(6,*) ' Mean value over the ocean', TRIM(cpbas), ': ', dvmeanout3d(jbasin,jt), jt
         rdummy(:,:) = dvmeanout3d(jbasin,jt)
         ierr = putvar0d(ncout, id_varout(zb + 2), rdummy, ktime=jt )
 
         IF ( lvar ) THEN
           dvariance3d(jbasin,jt) = dvar(jbasin) / dvol(jbasin) - dsum(jbasin) / dvol(jbasin) * dsum(jbasin) / dvol(jbasin)
-          WRITE(6,*) ' Variance over the ocean', cpbas, ': ', dvariance3d(jbasin,jt), jt
+          WRITE(6,*) ' Variance over the ocean', TRIM(cpbas), ': ', dvariance3d(jbasin,jt), jt
           rdummy(:,:) = dvariance3d(jbasin,jt)
           ierr = putvar0d(ncout, id_varout(zb + 4), rdummy, ktime=jt )
         ENDIF

@@ -94,7 +94,7 @@ PROGRAM cdfdiv
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : div units : s^-1'
      PRINT *,'               or divoverf, no units (if -overf option)'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg=1
@@ -129,7 +129,7 @@ PROGRAM cdfdiv
   lchk = chkfile(cn_fzgr ) .OR. lchk
   lchk = chkfile(cf_ufil ) .OR. lchk
   lchk = chkfile(cf_vfil ) .OR. lchk
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   ! define new variables for output
   stypvar(1)%cname             = 'div'
@@ -166,7 +166,7 @@ PROGRAM cdfdiv
   IF ( (npk==0) .AND. (nlev > 0) .AND. .NOT. lsurf ) THEN
      PRINT *, 'Problem : npk = 0 and lev > 0 STOP'
      PRINT *, '  Use -surf option is dealing with single level file on C grid '
-     STOP
+     STOP 99
   END IF
 
   ! case of 1 level on C-grid
