@@ -74,21 +74,21 @@ PROGRAM cdfpendep
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : pendep (m)'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
   CALL getarg (ijarg, cf_trcfil) ; ijarg = ijarg + 1 
   CALL getarg (ijarg, cf_inv   ) ; ijarg = ijarg + 1
 
-  IF ( chkfile(cf_trcfil) .OR. chkfile(cf_inv) ) STOP ! missing file
+  IF ( chkfile(cf_trcfil) .OR. chkfile(cf_inv) ) STOP 99 ! missing file
 
   DO WHILE ( ijarg <= narg)
      CALL getarg(ijarg, cldum ) ; ijarg = ijarg + 1 
      SELECT CASE ( cldum )
      CASE ('-inv') ;  CALL getarg(ijarg, cv_inv) ; ijarg=ijarg+1
      CASE ('-trc') ;  CALL getarg(ijarg, cv_trc) ; ijarg=ijarg+1
-     CASE DEFAULT  ; PRINT *, 'option ', TRIM(cldum),' not understood' ; STOP
+     CASE DEFAULT  ; PRINT *, 'option ', TRIM(cldum),' not understood' ; STOP 99
      END SELECT
   END DO
 

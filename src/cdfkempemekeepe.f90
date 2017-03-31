@@ -52,12 +52,12 @@ PROGRAM cdfkempemekeepe
      PRINT *,'     the mean must have been computed on a period long enough'
      PRINT *,'     for the statistics to be meaningful'
      PRINT *,'                         '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_uvwtfil)
 
-  IF (chkfile(cf_uvwtfil) ) STOP ! missing file
+  IF (chkfile(cf_uvwtfil) ) STOP 99 ! missing file
   npiglo = getdim(cf_uvwtfil, cn_x)
   npjglo = getdim(cf_uvwtfil, cn_y)
   npk    = getdim(cf_uvwtfil, cn_z)

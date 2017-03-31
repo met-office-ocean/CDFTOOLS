@@ -88,7 +88,7 @@ PROGRAM cdfvtrp
      PRINT *,'          If option -bathy is used :'
      PRINT *,'           ', TRIM(cv_soastrp),' : along slope transport'
      PRINT *,'           ', TRIM(cv_socstrp),' : cross slope transport'
-     STOP
+     STOP 99
   ENDIF
 
   ! scan command line and set flags
@@ -113,7 +113,7 @@ PROGRAM cdfvtrp
   lchk = lchk .OR. chkfile ( cf_ufil )
   lchk = lchk .OR. chkfile ( cf_vfil )
   IF ( lbathy ) lchk = lchk .OR. chkfile ( cn_fmsk )
-  IF ( lchk ) STOP   ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   ALLOCATE ( ipk(nvarout), id_varout(nvarout), stypvar(nvarout) )
 

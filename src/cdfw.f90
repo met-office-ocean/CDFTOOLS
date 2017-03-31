@@ -81,7 +81,7 @@ PROGRAM cdfw
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : ', TRIM(cn_vovecrtz),' (m/s)'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
@@ -104,7 +104,7 @@ PROGRAM cdfw
   lchk = chkfile (cn_fzgr) .OR. lchk
   lchk = chkfile (cf_ufil) .OR. lchk
   lchk = chkfile (cf_vfil) .OR. lchk
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   npiglo = getdim(cf_ufil,cn_x)
   npjglo = getdim(cf_ufil,cn_y)

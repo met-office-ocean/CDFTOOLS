@@ -89,13 +89,13 @@ PROGRAM cdfeddyscale
      PRINT *,'      '
      PRINT *,'     SEE ALSO :'
      PRINT *,'       cdfeddyscale_pass1 '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_meanfil)
 
   lchk = chkfile(cf_meanfil ) .OR. lchk
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   npiglo = getdim(cf_meanfil,cn_x)
   npjglo = getdim(cf_meanfil,cn_y)

@@ -82,7 +82,7 @@ PROGRAM cdfstrconv
      PRINT *,'    Output 6 cdf files : for emp, qnet, qsr, sst, taux, tauy with standard var name :'
      PRINT *,'        sowaflup, sohefldo, soshfldo, sst, sozotaux, sometauy '
      PRINT *,'    coordinates.diags ( clipper like) is required in current dir '
-     STOP
+     STOP 99
   ENDIF
   !!
   CALL getarg (1, cdum)

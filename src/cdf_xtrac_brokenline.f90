@@ -182,7 +182,7 @@ PROGRAM cdf_xtract_brokenline
       PRINT *,'     SEE ALSO :'
       PRINT *,'        cdftransport, cdfmoc, cdfmocsig. This tool replaces cdfovide.' 
       PRINT *,'      '
-      STOP
+      STOP 99
    ENDIF
 
    ! Decode command line
@@ -218,7 +218,7 @@ PROGRAM cdf_xtract_brokenline
          lchk = chkfile(cf_sec(jsec) ) .OR. lchk
       ENDDO
    ENDIF
-   IF ( lchk     ) STOP ! missing files
+   IF ( lchk     ) STOP 99 ! missing files
 
    ! nvar and nsec are  now fixed
    ALLOCATE( stypvar(nvar), ipk(nvar), id_varout(nvar) )

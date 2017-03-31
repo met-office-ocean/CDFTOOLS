@@ -91,7 +91,7 @@ PROGRAM cdfmht_gsop
      PRINT *,'      variables zobtmhta  : Barotropic component '
      PRINT *,'      variables zoshmhta  : Vertical shear geostrophic component '
      PRINT *,'      variables zoagmhta  : vertical shear ageostrophic component (Ekman + residu)'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cfilev)

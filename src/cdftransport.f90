@@ -251,7 +251,7 @@ PROGRAM cdftransport
       PRINT *,'     SEE ALSO :'
       PRINT *,'       cdfsigtrp'
       PRINT *,'      '
-      STOP
+      STOP 99
    ENDIF
 
    itime  = 1
@@ -315,7 +315,7 @@ PROGRAM cdftransport
          lchk = lchk .OR. chkfile(cf_tfil)
       ENDIF
    ENDIF
-   IF ( lchk ) STOP ! missing files
+   IF ( lchk ) STOP 99 ! missing files
 
    ! adjust the number of output variables according to options
    IF ( nclass > 1 ) THEN
@@ -659,7 +659,10 @@ PROGRAM cdftransport
          ! ... compute the nearest ji point on the line crossing at ji
          DO ji=ii0, ii1
             np=np+1
-            IF (np > jpseg) STOP 'np > jpseg !'
+            IF (np > jpseg) THEN
+               PRINT *, 'np > jpseg !'
+               STOP 99
+            ENDIF
             ij=NINT(aj*ji + bj )
             yypt(np) = CMPLX(ji,ij)
          END DO
@@ -682,7 +685,10 @@ PROGRAM cdftransport
          ! ... compute the nearest ji point on the line crossing at jj
          DO jj=ij0,ij1
             np=np+1
-            IF (np > jpseg) STOP 'np > jpseg !'
+            IF (np > jpseg) THEN
+               PRINT *, 'np > jpseg !'
+               STOP 99
+            ENDIF
             ii=NINT(ai*jj + bi)
             yypt(np) = CMPLX(ii,jj)
          END DO
@@ -702,12 +708,18 @@ PROGRAM cdftransport
          IF ( rd > 1 ) THEN
             CALL interm_pt(yypt, jk, ai, bi, aj, bj, yypti)
             nn=nn+1
-            IF (nn > jpseg) STOP 'nn>jpseg !'
+            IF (nn > jpseg) THEN
+               PRINT *, 'nn>jpseg !'
+               STOP 99
+            ENDIF
             rxx(nn) = REAL(yypti)
             ryy(nn) = IMAG(yypti)
          END IF
          nn=nn+1
-         IF (nn > jpseg) STOP 'nn>jpseg !'
+         IF (nn > jpseg) THEN
+            PRINT *, 'nn>jpseg !'
+            STOP 99
+         ENDIF
          rxx(nn) = REAL(yypt(jk))
          ryy(nn) = IMAG(yypt(jk))
       END DO

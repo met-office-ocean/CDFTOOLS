@@ -76,7 +76,7 @@ PROGRAM cdfbn2
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : ', TRIM(cv_bn2)
-     STOP
+     STOP 99
   ENDIF
 
   cglobal = 'Partial step computation'
@@ -89,13 +89,13 @@ PROGRAM cdfbn2
      SELECT CASE (cldum)
      CASE ('W','w') ; l_w   = .true.
      CASE ('-full') ; lfull = .true. ; cglobal = 'full step computation'
-     CASE DEFAULT   ; PRINT *,' Option not understood :', TRIM(cldum) ; STOP
+     CASE DEFAULT   ; PRINT *,' Option not understood :', TRIM(cldum) ; STOP 99
      END SELECT
   END DO
 
   lchk = chkfile (cn_fzgr )
   lchk = lchk .OR. chkfile (cf_tfil  )
-  IF ( lchk  ) STOP  ! missing files 
+  IF ( lchk  ) STOP 99 ! missing files 
 
   npiglo = getdim (cf_tfil, cn_x)
   npjglo = getdim (cf_tfil, cn_y)
