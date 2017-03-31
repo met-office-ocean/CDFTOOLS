@@ -788,7 +788,7 @@ CONTAINS
   END FUNCTION atted_r4
 
 
-  INTEGER(KIND=4)  FUNCTION  getdim (cdfile, cdim_name, cdtrue, kstatus, ldexact)
+  INTEGER(KIND=4)  FUNCTION  getdim (cdfile, cdim_name, cdtrue, kstatus)
     !!---------------------------------------------------------------------
     !!                  ***  FUNCTION getdim  ***
     !!
@@ -806,53 +806,68 @@ CONTAINS
     CHARACTER(LEN=*),             INTENT(in ) :: cdim_name  ! File name to look at
     CHARACTER(LEN=256), OPTIONAL, INTENT(out) :: cdtrue     ! full name of the read dimension
     INTEGER(KIND=4),    OPTIONAL, INTENT(out) :: kstatus    ! status of the nf inquire
-    LOGICAL,            OPTIONAL, INTENT(in ) :: ldexact    ! when true look for exact cdim_name
 
-    INTEGER(KIND=4)    :: jdim
+    INTEGER(KIND=4)    :: jdim, zdim
     INTEGER(KIND=4)    :: incid, id_dim, idv
     INTEGER(KIND=4)    :: istatus
     INTEGER(KIND=4)    :: idims
-    CHARACTER(LEN=256) :: clnam
-    LOGICAL            :: lexact   = .true.
+    INTEGER(KIND=4)    :: js, zs
+    CHARACTER(LEN=256) :: clnam, zlnam, zdim_name
     LOGICAL, SAVE      :: ll_first = .true.
     !!-----------------------------------------------------------
     clnam = '-------------'
+    zdim = 0
 
-    IF ( PRESENT(kstatus)  ) kstatus=0
-    IF ( PRESENT(ldexact)  ) lexact=ldexact
     istatus=NF90_OPEN(cdfile, NF90_NOWRITE, incid)
+
     IF ( istatus == NF90_NOERR ) THEN
        istatus=NF90_INQUIRE(incid, ndimensions=idims)
+       istatus=NF90_INQ_DIMID(incid, cdim_name, id_dim)
 
-       IF ( lexact ) THEN
-          istatus=NF90_INQ_DIMID(incid, cdim_name, id_dim)
-          IF (istatus /= NF90_NOERR ) THEN
-            ! Stop if not requesting error code for external handling
-            IF ( .NOT. PRESENT(kstatus) ) THEN
-              PRINT *,NF90_STRERROR(istatus)
-              PRINT *,' Exact dimension name ', TRIM(cdim_name),' not found in ',TRIM(cdfile) ; STOP
-            ELSE
-              kstatus = istatus
-            ENDIF
-          ENDIF
-          istatus=NF90_INQUIRE_DIMENSION(incid, id_dim, len=getdim)
-          IF ( PRESENT(cdtrue) ) cdtrue=cdim_name
-          jdim = 0
-       ELSE  ! scann all dims to look for a partial match
-         DO jdim = 1, idims
-            istatus=NF90_INQUIRE_DIMENSION(incid, jdim, name=clnam, len=getdim)
-            IF ( INDEX(clnam, TRIM(cdim_name)) /= 0 ) THEN
-               IF ( PRESENT(cdtrue) ) cdtrue=clnam
-               EXIT
-            ENDIF
-         ENDDO
+       ! If no dimension with the exact name, try to find one with a similar name.
+       ! We find dimension names containing cdim_name, where characters must occur 
+       ! in the same order but not necessarily be contiguous. The name containing 
+       ! the highest proportion of matched characters is chosen.
+       IF (istatus /= NF90_NOERR ) THEN
+          zdim = 999
+          zdim_name = ADJUSTL(cdim_name)
+    
+          DO jdim = 1, idims
+             istatus = NF90_INQUIRE_DIMENSION(incid, jdim, name=clnam, len=getdim)
+             zs = 1
+             zlnam = ADJUSTL(clnam)
+        
+             IF ( LEN_TRIM(zlnam) < zdim .AND. LEN_TRIM(zlnam) >= LEN_TRIM(zdim_name) ) THEN
+                DO js = 1, LEN_TRIM(zlnam)
+                   IF ( zlnam(js:js) == zdim_name(zs:zs) ) THEN
+                       zs = zs + 1
+                   ENDIF
+
+                   ! If all characters in cdim_name have been matched, 
+                   ! move to next dimension and update dimension info
+                   IF ( zs > LEN_TRIM(zdim_name) ) THEN
+                       id_dim = jdim
+                       zdim = LEN_TRIM(zlnam)
+                       EXIT
+                   ENDIF
+                ENDDO
+             ENDIF
+          ENDDO
        ENDIF
 
-       IF ( jdim > idims ) THEN   ! dimension not found
-          IF ( PRESENT(kstatus) ) kstatus=1    ! error send optionally to the calling program
-          getdim=0
-          IF ( PRESENT(cdtrue) ) cdtrue='unknown'
+       ! Return dimension info if found
+       IF ( zdim /= 999 ) THEN
+          istatus = NF90_INQUIRE_DIMENSION(incid, id_dim, name=clnam, len=getdim)
+       ELSE
+          istatus = 1
+          getdim = 0
+          clnam = 'unknown'
        ENDIF
+
+       ! Output variables
+       IF ( PRESENT(cdtrue) ) cdtrue = clnam
+       IF ( PRESENT(kstatus) ) kstatus = istatus
+
        ! first call 
        IF ( ll_first ) THEN
           ll_first = .false. 
@@ -915,8 +930,6 @@ CONTAINS
        IF ( PRESENT(cdtrue) ) cdtrue='unknown'
        IF ( PRESENT(kstatus) ) kstatus=1 
     ENDIF
-    ! reset lexact for next call 
-    lexact = .true.
 
   END FUNCTION getdim
 
