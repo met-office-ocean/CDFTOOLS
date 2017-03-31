@@ -120,7 +120,7 @@ REAL*8,ALLOCATABLE,DIMENSION(:) :: d, X1
      PRINT *,' cdfsections U.nc V.nc T.nc 48.0 305.0 1 49.0 307.0 50.5 337.5 20'
      PRINT *,'Example for a section made of 2 linear segments : '
      PRINT *,' cdfsections U.nc V.nc T.nc 48.0 305.0 2 49.0 307.0 50.5 337.5 20 40.3 305.1 50'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, file_in_U )
@@ -136,7 +136,7 @@ REAL*8,ALLOCATABLE,DIMENSION(:) :: d, X1
     PRINT *, 'Usage : '
     PRINT *, ' cdfsections  Ufile Vfile Tfile larf lorf Nsec lat1 lon1 lat2 lon2 n1 ....'
     PRINT *, '-> please execute cdfsections without any arguments for more details.'
-    STOP
+    STOP 99
   endif
 
   ALLOCATE( lat(Nsec+1), lon(Nsec+1) )
@@ -154,7 +154,7 @@ REAL*8,ALLOCATABLE,DIMENSION(:) :: d, X1
   do i=1,Nsec+1
     if ( (lon(i).lt.0.0).or.(lonref.lt.0.0) ) then
       PRINT *, '**!/# ERROR : longitudes must be between 0 and 360'
-      STOP
+      STOP 99
     endif
   enddo
    
@@ -896,7 +896,7 @@ SUBROUTINE erreur(iret, lstop, chaine)
     WRITE(*,*) 'ERREUR: ', iret
     message=NF90_STRERROR(iret)
     WRITE(*,*) 'THIS MEANS :',TRIM(message)
-    IF ( lstop ) STOP
+    IF ( lstop ) STOP 99
   ENDIF
   !
 END SUBROUTINE erreur

@@ -43,7 +43,7 @@ PROGRAM cdfcofpoint
      PRINT *,'    if jmin = 0 then ALL j are taken'
      PRINT *,'    if kmin = 0 then ALL k are taken'
      PRINT *,'    output file is pointcoast.nc    '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cfile)
@@ -58,7 +58,7 @@ PROGRAM cdfcofpoint
   IF (narg > 3 ) THEN
     IF ( narg /= 5 ) THEN
        PRINT *, ' ERROR : You must give 6 optional values (imin imax jmin jmax kmin kmax)'
-       STOP
+       STOP 99
     ELSE
     ! input optional imin imax jmin jmax
       CALL getarg ( 2,cldum) ; READ(cldum,*) imin

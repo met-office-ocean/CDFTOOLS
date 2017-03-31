@@ -128,7 +128,7 @@ PROGRAM cdfmean
      PRINT *,'       - ASCII files : ', TRIM(cf_out) 
      PRINT *,'                       [ ',TRIM(cf_var),', in case of -var ]'
      PRINT *,'       - all output on ASCII files are also sent to standard output.'
-     STOP
+     STOP 99
   ENDIF
 
   ! Open standard output with recl=256 to avoid wrapping of long lines (ifort)
@@ -161,7 +161,7 @@ PROGRAM cdfmean
         CASE ( 9 ) ; READ(cldum,*) ikmax
         CASE DEFAULT 
           PRINT *, '  ERROR : Too many arguments ...'
-          STOP
+          STOP 99
         END SELECT
      END SELECT
   END DO
@@ -170,7 +170,7 @@ PROGRAM cdfmean
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_in  ) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   cv_dep   = 'none'
   npiglo = getdim (cf_in, cn_x)
@@ -258,7 +258,7 @@ PROGRAM cdfmean
      cv_dep   = cn_gdepw
   CASE DEFAULT
      PRINT *, 'this type of variable is not known :', TRIM(ctype)
-     STOP
+     STOP 99
   END SELECT
 
   e1(:,:) = getvar  (cn_fhgr, cv_e1,  1,  npiglo, npjglo, kimin=iimin, kjmin=ijmin)

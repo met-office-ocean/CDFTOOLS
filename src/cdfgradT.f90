@@ -82,7 +82,7 @@ PROGRAM cdfgradT
       PRINT *,'     SEE ALSO :'
       PRINT *,'      '
       PRINT *,'      '
-      STOP
+      STOP 99
    ENDIF
 
    CALL getarg (1, cf_tfil)
@@ -97,7 +97,7 @@ PROGRAM cdfgradT
    lchk = ( lchk .OR. chkfile(cn_fhgr) )
    lchk = ( lchk .OR. chkfile(cn_fzgr) )
    lchk = ( lchk .OR. chkfile(cn_fmsk) )
-   IF (lchk ) STOP ! missing file
+   IF (lchk ) STOP 99 ! missing file
 
    npiglo = getdim (cf_tfil, cn_x)
    npjglo = getdim (cf_tfil, cn_y)

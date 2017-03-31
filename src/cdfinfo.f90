@@ -58,7 +58,7 @@ PROGRAM cdfinfo
      PRINT *,'        On standard ouput, gives the size of the domain, the depth '
      PRINT *,'        dimension name, the number of variables.'
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_in)
@@ -71,7 +71,7 @@ PROGRAM cdfinfo
      END SELECT
   ENDDO
         
-  IF ( chkfile(cf_in) ) STOP ! missing file
+  IF ( chkfile(cf_in) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in,cn_x)
   npjglo = getdim (cf_in,cn_y)

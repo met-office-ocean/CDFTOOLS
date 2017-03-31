@@ -77,7 +77,7 @@ PROGRAM cdfpolymask
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : polymask'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1 
@@ -91,11 +91,11 @@ PROGRAM cdfpolymask
      CASE DEFAULT
         PRINT *,' unknown optional arugment (', TRIM(cldum),' )'
         PRINT *,' in actual version only -r -- for reverse -- is recognized '
-        STOP
+        STOP 99
      END SELECT
   END DO
 
-  IF ( chkfile(cf_poly) .OR. chkfile(cf_ref) ) STOP ! missing files
+  IF ( chkfile(cf_poly) .OR. chkfile(cf_ref) ) STOP 99 ! missing files
 
   npiglo = getdim (cf_ref, cn_x)
   npjglo = getdim (cf_ref, cn_y)

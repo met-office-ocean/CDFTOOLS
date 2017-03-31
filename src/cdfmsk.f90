@@ -45,16 +45,16 @@ PROGRAM cdfmsk
      PRINT *,'      '
      PRINT *,'     OUTPUT : '
      PRINT *,'       Standard output'
-     STOP
+     STOP 99
   ENDIF
   IF ( narg == 0 ) THEN
      PRINT *,' Usage : cdfmsk  maskfile '
-     STOP
+     STOP 99
   ENDIF
   
   CALL getarg (1, cf_msk)
 
-  IF ( chkfile(cf_msk) ) STOP ! missing file
+  IF ( chkfile(cf_msk) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_msk, cn_x)
   npjglo = getdim (cf_msk, cn_y)
