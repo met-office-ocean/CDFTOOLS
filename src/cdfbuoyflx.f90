@@ -138,7 +138,7 @@ PROGRAM cdfbuoyflx
      PRINT *,'     SEE ALSO :'
      PRINT *,'      '
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
   ijarg   = 1
   cf_flxfil='none'
@@ -170,10 +170,10 @@ PROGRAM cdfbuoyflx
         lsho = .true. ; np_varout = 1
      CASE DEFAULT
         PRINT *, " Option ", TRIM(cldum)," not supported "
-        STOP
+        STOP 99
      END SELECT
   ENDDO
-  IF (lchk ) STOP ! missing files
+  IF (lchk ) STOP 99 ! missing files
 
   IF ( cf_flxfil == 'none' ) THEN
     cf_flxfil = cf_tfil

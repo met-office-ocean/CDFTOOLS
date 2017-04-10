@@ -127,7 +127,7 @@ PROGRAM cdfmxl
      PRINT *,'                     somxlt05z10 = mld on temperature criterium -0.5 ref. 10m'
      PRINT *,'                     somxl030z10 = mld on density criterium 0.03 ref. 10m'
      PRINT *,'                     somxl125z10 = mld on density criterium 0.125 ref. 10m'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1 ; ixtra = 0
@@ -143,12 +143,12 @@ PROGRAM cdfmxl
       CASE ( 2 ) ; cf_sfil = cldum                      ! second free name ( if any) is a gridS file name
       CASE DEFAULT 
         PRINT *, ' +++ ERROR : Too many files in input !'
-        STOP
+        STOP 99
       END SELECT
     END SELECT
   ENDDO
 
-  IF ( chkfile(cf_tfil) .OR. chkfile(cn_fzgr) .OR. chkfile(cf_sfil)  ) STOP ! missing file
+  IF ( chkfile(cf_tfil) .OR. chkfile(cn_fzgr) .OR. chkfile(cf_sfil)  ) STOP 99 ! missing file
 
   ! read dimensions 
   npiglo = getdim (cf_tfil,cn_x)

@@ -79,7 +79,7 @@ PROGRAM cdftempvol_full
      PRINT '(255a)','         -bimg : 2D (x=lat/lon, y=temp) output on bimg file for hiso, cumul trp, trp'
      PRINT '(255a)',' Files mesh_hgr.nc, mesh_zgr.nc must be in the current directory'
      PRINT '(255a)',' Output on voltemp.txt'
-     STOP
+     STOP 99
   ENDIF
 
   !! Read arguments

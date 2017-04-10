@@ -86,7 +86,7 @@ PROGRAM cdfvT
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'       variables : ',TRIM(cn_vozout),', ',TRIM(cn_vozous),', ',TRIM(cn_vomevt),' and ',TRIM(cn_vomevs)
-     STOP
+     STOP 99
   ENDIF
 
   !! Initialisation from 1st file (all file are assume to have the same geometry)

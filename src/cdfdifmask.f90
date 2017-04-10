@@ -54,14 +54,14 @@ PROGRAM cdfdifmask
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'       variables : tmask, umask, vmask, fmask'
-     STOP
+     STOP 99
   ENDIF
   CALL getarg (1, cf_msk1)
   CALL getarg (2, cf_msk2)
 
   lchk =           chkfile ( cf_msk1 )
   lchk = lchk .OR. chkfile ( cf_msk2 )
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   npiglo = getdim (cf_msk1, cn_x)
   npjglo = getdim (cf_msk1, cn_y)

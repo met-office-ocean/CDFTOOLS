@@ -68,13 +68,13 @@ PROGRAM cdfsigi
      PRINT *,'     SEE ALSO :'
      PRINT *,'      cdfsig0' 
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_tfil)
   CALL getarg (2, cldum) ; READ(cldum,*) ref_dep
 
-  IF ( chkfile(cf_tfil) ) STOP ! missing file
+  IF ( chkfile(cf_tfil) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_tfil, cn_x)
   npjglo = getdim (cf_tfil, cn_y)

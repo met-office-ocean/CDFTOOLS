@@ -82,7 +82,7 @@ PROGRAM cdfflxconv
      PRINT *,'    Output 6 cdf files : for emp, qnet, qsr, sst, taux, tauy with standard var name :'
      PRINT *,'        sowaflup, sohefldo, soshfldo, sst, sozotaux, sometauy '
      PRINT *,'    coordinates.diags ( clipper like) is required in current dir '
-     STOP
+     STOP 99
   ENDIF
   !!
   CALL getarg (1, cdum)
@@ -416,7 +416,7 @@ PROGRAM cdfflxconv
         READ(numsstp,REC=ntp-1) (( v2d(ji,jj,itt),ji=1,npiglo),jj=1,npjglo)
         itime(itt)=julday(INT(timetagp(ntp-2)) )
      ELSE
-        PRINT *,' Something is wrong in previous file SST ' ; STOP
+        PRINT *,' Something is wrong in previous file SST ' ; STOP 99
      ENDIF
   ENDIF
   DO jt=1,nt
@@ -460,7 +460,7 @@ PROGRAM cdfflxconv
            READ(numsstn,REC=4) (( v2d(ji,jj,itt),ji=1,npiglo),jj=1,npjglo)
            itime(itt)=julday(INT(timetagn(3)) )
         ELSE
-           PRINT *,' Something is wrong in next file SST ' ; STOP
+           PRINT *,' Something is wrong in next file SST ' ; STOP 99
         ENDIF
      ENDIF
   ENDIF

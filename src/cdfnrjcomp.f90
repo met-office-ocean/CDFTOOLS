@@ -65,12 +65,12 @@ PROGRAM cdfnrjcomp
      PRINT *,'                     anotsqrt : mean squared temperature anomaly'
      PRINT *,'                     anousqrt : mean squared zonal velocity anomaly'
      PRINT *,'                     anovsqrt : mean squared meridional velocity anomaly'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_in)
 
-  IF ( chkfile(cf_in) ) STOP ! missing file
+  IF ( chkfile(cf_in) ) STOP 99 ! missing file
 
   npiglo = getdim(cf_in,cn_x)
   npjglo = getdim(cf_in,cn_y)

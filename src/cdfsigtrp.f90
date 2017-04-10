@@ -198,7 +198,7 @@ PROGRAM cdfsigtrp
       PRINT *,'     SEE ALSO :'
       PRINT *,'      cdfrhoproj, cdftransport, cdfsigintegr '
       PRINT *,'      '
-      STOP
+      STOP 99
    ENDIF
 
    ! browse command line
@@ -224,7 +224,7 @@ PROGRAM cdfsigtrp
          CASE ( 5 ) ; READ(cldum,*) dsigma_max
          CASE ( 6 ) ; READ(cldum,*) nbins
          CASE DEFAULT 
-            PRINT *,' Too many arguments ' ; STOP
+            PRINT *,' Too many arguments ' ; STOP 99
          END SELECT
       END SELECT
    END DO
@@ -236,7 +236,7 @@ PROGRAM cdfsigtrp
    lchk = lchk .OR. chkfile( cf_tfil    )
    lchk = lchk .OR. chkfile( cf_ufil    )
    lchk = lchk .OR. chkfile( cf_vfil    )
-   IF ( lchk ) STOP ! missing file
+   IF ( lchk ) STOP 99 ! missing file
    IF ( ltemp)  THEN  ! temperature decrease downward. Change sign and swap min/max
       refdep = -10. ! flag value
       dltsig     = dsigma_max  ! use dltsig as dummy variable for swapping

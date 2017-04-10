@@ -85,7 +85,7 @@ PROGRAM cdfuv
      PRINT *,'                   ',TRIM(cn_vozocrtx)//'_t : Mean U at T point'
      PRINT *,'                   ',TRIM(cn_vomecrty)//'_t : Mean V at T point'
      PRINT *,'                   ',TRIM(CN_VOUV)//'_prime : Mean U''.V'' at T point'
-     STOP
+     STOP 99
   ENDIF
 
   !! Initialisation from 1st file (all file are assume to have the same geometry)

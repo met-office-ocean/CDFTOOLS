@@ -129,7 +129,7 @@ PROGRAM cdfzonalsum
      PRINT *,'                      if a BASIN-file is used.'
      PRINT *,'            Units are modified by adding ''.m2'' at the end. Can be improved !'
      PRINT *,'            In addition, ''.degree-1'' is append to unit with -pdeg option.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1  ; ireq = 0
@@ -151,7 +151,7 @@ PROGRAM cdfzonalsum
                  npbasins   = 5
                  lchk       = chkfile (cf_basins)
       CASE DEFAULT 
-        PRINT *,' Too many arguments ...' ; STOP
+        PRINT *,' Too many arguments ...' ; STOP 99
       END SELECT
     END SELECT
   END DO
@@ -169,7 +169,7 @@ PROGRAM cdfzonalsum
   lchk = lchk .OR. chkfile (cn_fzgr)
   lchk = lchk .OR. chkfile (cn_fmsk)
   lchk = lchk .OR. chkfile (cf_in  )
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   ! set the metrics according to C grid point
   SELECT CASE (ctyp)
@@ -194,7 +194,7 @@ PROGRAM cdfzonalsum
      cv_depi = cn_gdepw   ; cv_depo = cn_vdepthw
      cv_phi  = cn_gphit   ; cv_msk  = 'tmask'
   CASE DEFAULT
-     PRINT *, ' C grid:', TRIM(ctyp),' point not known!' ; STOP
+     PRINT *, ' C grid:', TRIM(ctyp),' point not known!' ; STOP 99
   END SELECT
 
   nvarin  = getnvar(cf_in)   ! number of input variables

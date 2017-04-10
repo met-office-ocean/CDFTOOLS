@@ -72,13 +72,13 @@ PROGRAM cdfbottom
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables :  same names than input file, long_name attribute is'
      PRINT *,'               prefixed by Bottom '
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
   CALL getarg (ijarg, cf_in) ; ijarg = ijarg + 1
 
-  IF ( chkfile(cf_in) ) STOP  ! missing files
+  IF ( chkfile(cf_in) ) STOP 99 ! missing files
 
   npiglo = getdim (cf_in,cn_x)
   npjglo = getdim (cf_in,cn_y)
@@ -105,7 +105,7 @@ PROGRAM cdfbottom
 
   DO WHILE ( ijarg <= narg )
      CALL getarg (ijarg, ctype ) ; ijarg = ijarg + 1
-     IF ( chkfile (cn_fmsk ) ) STOP  ! missing mask file
+     IF ( chkfile (cn_fmsk ) ) STOP 99 ! missing mask file
 
      SELECT CASE ( ctype )
      CASE ( 'T', 't', 'S', 's' )
@@ -119,7 +119,7 @@ PROGRAM cdfbottom
         PRINT *, 'Be carefull with fmask ... !!!'
      CASE DEFAULT
         PRINT *, ' ERROR : This type of point ', ctype,' is not known !'
-        STOP
+        STOP 99
      END SELECT
 
   END DO

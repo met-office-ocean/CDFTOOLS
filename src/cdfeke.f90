@@ -91,7 +91,7 @@ PROGRAM cdfeke
      PRINT *,'       netcdf file : ', TRIM(cf_out) , ' unless -o option in use.'
      PRINT *,'         variables : voeke (m2/s)'
      PRINT *,'         variables : vomke (m2/s) if required'
-     STOP
+     STOP 99
   ENDIF
   !!
   !! Initialisation from 1st file (all file are assume to have the same geometry)
@@ -124,7 +124,7 @@ PROGRAM cdfeke
   IF ( nfree /= 3 .AND. nfree /= 5 ) THEN
     PRINT *, ' +++ ERROR : not the correct number of free arguments'
     PRINT *, '            Likely a wrong option or missing file name'
-    STOP
+    STOP 99
   ENDIF
 
   ! ( 2 )
@@ -162,7 +162,7 @@ PROGRAM cdfeke
     lchk = lchk .OR. chkfile (cf_v2fil)
   ENDIF
 
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   npiglo = getdim (cf_ufil,cn_x)
   npjglo = getdim (cf_ufil,cn_y)

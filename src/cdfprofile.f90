@@ -77,7 +77,7 @@ PROGRAM cdfprofile
      PRINT *,'       netcdf file : ', TRIM(cf_out)
      PRINT *,'          variable : name given as argument.'
      PRINT *,'       Profile is also written on standard output.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
@@ -97,7 +97,7 @@ PROGRAM cdfprofile
    END SELECT
   ENDDO
       
-  IF ( chkfile(cf_in) ) STOP ! missing file
+  IF ( chkfile(cf_in) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in, cn_x)
   npjglo = getdim (cf_in, cn_y)

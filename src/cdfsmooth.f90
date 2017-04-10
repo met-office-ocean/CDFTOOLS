@@ -117,7 +117,7 @@ PROGRAM cdfsmooth
      PRINT *,'       of the filter type (1 letter) and of ncut.'
      PRINT *,'       netcdf file :   IN-file[LHSB]ncut'
      PRINT *,'         variables : same as input variables.'
-     STOP
+     STOP 99
   ENDIF
   !
   ijarg = 1
@@ -138,9 +138,12 @@ PROGRAM cdfsmooth
      END SELECT
   ENDDO
 
-  IF ( ncut == 0 ) STOP ' cdfsmooth : ncut = 0 --> nothing to do !'
+  IF ( ncut == 0 ) THEN
+     PRINT *, ' cdfsmooth : ncut = 0 --> nothing to do !'
+     STOP 99
+  ENDIF
 
-  IF ( chkfile(cf_in) ) STOP ! missing file
+  IF ( chkfile(cf_in) ) STOP 99 ! missing file
 
   !  remark: for a spatial filter, fn=dx/lambda where dx is spatial step, lamda is cutting wavelength
   fn    = 1./ncut
@@ -173,7 +176,7 @@ PROGRAM cdfsmooth
           PRINT *,' Working with Box filter'
         ENDIF
      CASE DEFAULT
-        PRINT *, TRIM(ctyp),' : undefined filter ' ; STOP
+        PRINT *, TRIM(ctyp),' : undefined filter ' ; STOP 99
      END SELECT
 
   CALL filterinit (nfilter, fn, nband)

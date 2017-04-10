@@ -132,7 +132,7 @@ PROGRAM cdfvsig
      PRINT *,'                                            at velocity point.'
      PRINT *,'                   vosigu, vosigv, vosigw : mean sigma-0 at velocity point.'
      PRINT *,'                   ',TRIM(cn_vozocrtx),', ',TRIM(cn_vomecrty),', ',TRIM(cn_vovecrtz),' : mean velocity components.'
-     STOP
+     STOP 99
   ENDIF
 
   !! Initialisation from 1st file (all file are assume to have the same geometry)

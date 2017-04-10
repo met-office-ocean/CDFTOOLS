@@ -87,7 +87,7 @@ PROGRAM cdfhflx
      PRINT *,'       ASCII file  : ', TRIM(cf_out  )
      PRINT *,'       netcdf file : ', TRIM(cf_outnc) 
      PRINT *,'         variables : hflx_glo, [hflx_atl, hflx_inp, hflx_pac, hflx_ind]'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_tfil)
@@ -95,7 +95,7 @@ PROGRAM cdfhflx
   lchk = chkfile(cn_fhgr)
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_tfil) .OR. lchk
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   npiglo = getdim (cf_tfil,cn_x)
   npjglo = getdim (cf_tfil,cn_y)

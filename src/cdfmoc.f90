@@ -71,7 +71,7 @@ PROGRAM cdfmoc
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: gdepw           ! depthw
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: gdept           ! deptht
   REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: e31d            ! e3 1D : used if full step
-  REAL(KIND=4), DIMENSION(:),     ALLOCATABLE :: tim             ! time counter array
+  REAL(KIND=8), DIMENSION(:),     ALLOCATABLE :: tim             ! time counter array
 
   REAL(KIND=8), DIMENSION(:,:,:), ALLOCATABLE :: dmoc            ! nbasins x npjglo x npk
 
@@ -172,7 +172,7 @@ PROGRAM cdfmoc
      PRINT *,'       traditionally.'
      PRINT *,'       Additional variables are also computed following CLIVAR-GODAE '
      PRINT *,'       reanalysis intercomparison project recommendations. '
-     STOP
+     STOP 99
   ENDIF
 
   cglobal = 'Partial step computation'
@@ -198,7 +198,7 @@ PROGRAM cdfmoc
         CASE ( 4 ) ; cf_ufil = cldum
         CASE DEFAULT
            PRINT*, 'ERROR : Too many arguments ...'
-           STOP
+           STOP 99
         END SELECT
      END SELECT
   END DO
@@ -208,12 +208,12 @@ PROGRAM cdfmoc
   lchk = lchk .OR. chkfile ( cn_fmsk )
   lchk = lchk .OR. chkfile ( cf_vfil )
   IF ( ldec ) lchk = lchk .OR. chkfile ( TRIM(cf_tfil) ) 
-  IF ( lchk ) STOP  ! missing file(s)
+  IF ( lchk ) STOP 99 ! missing file(s)
 
   IF ( lrap ) THEN 
      ! all the work will be done in a separated routine for RAPID-MOCHA section
      CALL rapid_amoc 
-     STOP  ! program stops here in this case
+     STOP 99 ! program stops here in this case
   ENDIF
 
   npiglo = getdim (cf_vfil,cn_x)
@@ -1150,9 +1150,9 @@ PROGRAM cdfmoc
 
        END DO   ! time loop
 
-       tim  = getvar1d( cf_vfil, cn_vtimec, npt     )
-       ierr = putvar1d( ncout,   tim,       npt, 'T')
-       ierr = closeout( ncout                       )
+       tim  = getvar1d8( cf_vfil, cn_vtimec, npt     )
+       ierr = putvar1d(  ncout,   tim,       npt, 'T')
+       ierr = closeout(  ncout                       )
 
      END SUBROUTINE rapid_amoc
 
@@ -1333,7 +1333,7 @@ PROGRAM cdfmoc
   ncout = create      ( cf_moc,  'none',    1, npjglo, npk, cdep=cn_vdepthw )
   ierr  = createvar   ( ncout,   stypvar,   nvarout,   ipk, id_varout, cdglobal=TRIM(cglobal)           )
   ierr  = putheadervar( ncout,   cf_vfil,   1, npjglo, npk, pnavlon=rdumlon, pnavlat=rdumlat, pdep=gdepw)
-  tim   = getvar1d    ( cf_vfil, cn_vtimec, npt                    )
+  tim   = getvar1d8   ( cf_vfil, cn_vtimec, npt                    )
   ierr  = putvar1d    ( ncout,   tim,       npt, 'T')
 
      END SUBROUTINE CreateOutput

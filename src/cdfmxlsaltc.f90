@@ -81,7 +81,7 @@ PROGRAM cdfmxlsaltc
      PRINT *,'     SEE ALSO :'
      PRINT *,'       cdfmxl, cdfmxlhcsc, cdfmxlheatc ' 
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1 ; ireq = 0
@@ -105,7 +105,7 @@ PROGRAM cdfmxlsaltc
   lchk = chkfile (cn_fzgr)
   lchk = chkfile (cn_fmsk) .OR. lchk
   lchk = chkfile (cf_tfil  ) .OR. lchk
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   CALL SetGlobalAtt( cglobal )
 

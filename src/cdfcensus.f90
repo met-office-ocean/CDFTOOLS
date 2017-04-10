@@ -131,7 +131,7 @@ PROGRAM cdfcensus
      PRINT *,'                       sigma2  (kg/m3 -1000 )'
      PRINT *,'                       sigma3  (kg/m3 -1000 )'
      PRINT *,'       - bimg file   : According to options.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1
@@ -142,7 +142,7 @@ PROGRAM cdfcensus
   lchk =           chkfile ( cn_fzgr )
   lchk = lchk .OR. chkfile ( cn_fhgr )
   lchk = lchk .OR. chkfile ( cf_tfil  )
-  IF ( lchk ) STOP  ! some compulsory files are missing
+  IF ( lchk ) STOP 99 ! some compulsory files are missing
 
   PRINT *,' TS_FILE = ',TRIM(cf_tfil)
   PRINT *,' NLOG    = ', nlog
@@ -199,7 +199,7 @@ PROGRAM cdfcensus
         lfull = .TRUE.
      CASE DEFAULT
         PRINT *,' Unknown option :',TRIM(cldum)
-        STOP
+        STOP 99
      END SELECT
   END DO
 

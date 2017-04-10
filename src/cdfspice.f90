@@ -100,7 +100,7 @@ PROGRAM cdfspice
      PRINT *,'       Flament (2002) "A state variable for characterizing '
      PRINT *,'             water masses and their diffusive stability: spiciness."'
      PRINT *,'             Progress in Oceanography Volume 54, 2002, Pages 493-501.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg=1
@@ -119,12 +119,12 @@ PROGRAM cdfspice
          cf_tfil = cldum
       ELSE
          PRINT *,' option ',TRIM(cldum),' not understood'
-         STOP
+         STOP 99
       ENDIF
      END SELECT
   ENDDO
 
-  IF ( chkfile(cf_tfil) ) STOP ! missing files
+  IF ( chkfile(cf_tfil) ) STOP 99 ! missing files
 
   npiglo = getdim (cf_tfil,cn_x)
   npjglo = getdim (cf_tfil,cn_y)

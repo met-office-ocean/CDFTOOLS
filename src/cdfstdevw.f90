@@ -81,7 +81,7 @@ PROGRAM cdfstdevw
      PRINT *,'      '
      PRINT *,'     SEA ALSO :'
      PRINT *,'       cdfstd, cdfrmsssh, cdfstdevts.'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1  ; ireq = 0
@@ -97,7 +97,7 @@ PROGRAM cdfstdevw
         CASE ( 2 ) ; cf_in2 = cldum
         CASE ( 3 ) ; cv_in  = cldum ; cf_out='rms_var.nc'
         CASE DEFAULT
-           PRINT *, ' Too many variables ' ; STOP
+           PRINT *, ' Too many variables ' ; STOP 99
         END SELECT
      END SELECT
   ENDDO
@@ -105,7 +105,7 @@ PROGRAM cdfstdevw
   ! check existence of files
   lchk = lchk .OR. chkfile(cf_in )
   lchk = lchk .OR. chkfile(cf_in2)
-  IF (lchk ) STOP ! missing file
+  IF (lchk ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in, cn_x)
   npjglo = getdim (cf_in, cn_y)

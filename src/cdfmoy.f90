@@ -163,7 +163,7 @@ PROGRAM cdfmoy
      PRINT *,'     SEE ALSO :'
      PRINT *,'       cdfmoy_weighted, cdfstdev'
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
 
 
@@ -202,7 +202,7 @@ PROGRAM cdfmoy
   IF ( lzermean ) THEN
     lchk = lchk .OR. chkfile ( cn_fhgr )
     lchk = lchk .OR. chkfile ( cn_fmsk )
-    IF ( lchk ) STOP ! missing files
+    IF ( lchk ) STOP 99 ! missing files
   ENDIF
 
   ! Initialisation from  1rst file (all file are assume to have the same geometry)
@@ -210,7 +210,7 @@ PROGRAM cdfmoy
   ! loop for files
 
   cf_in = cf_list(1)
-  IF ( chkfile (cf_in) ) STOP ! missing file
+  IF ( chkfile (cf_in) ) STOP 99 ! missing file
 
   npiglo = getdim (cf_in, cn_x)
   npjglo = getdim (cf_in, cn_y)
@@ -412,7 +412,7 @@ PROGRAM cdfmoy
            DO jfil = 1, nfil
               cf_in = cf_list(jfil)
               IF ( jk == 1 ) THEN
-                  IF ( chkfile (cf_in) ) STOP ! missing file
+                  IF ( chkfile (cf_in) ) STOP 99 ! missing file
                   iwght=iwght+MAX(1,INT(getatt( cf_in, cv_nam(jvar), 'iweight')))
               ENDIF
 

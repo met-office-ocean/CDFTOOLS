@@ -129,7 +129,7 @@ PROGRAM cdfbathy
      PRINT 9999, '             a sequence number is added at the end of the input file name, to keep'
      PRINT 9999, '             modifications.'
      PRINT *,'            variables : same as input file'
-     STOP
+     STOP 99
   ENDIF
 9999 FORMAT(5x,a)
 
@@ -213,11 +213,11 @@ PROGRAM cdfbathy
      !
      CASE DEFAULT
         PRINT *, cldum,' : unknown option '
-        STOP
+        STOP 99
      END SELECT
   END DO
   
-  IF ( lchk ) STOP  ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   IF ( lmodif .AND. .NOT. loverwrite) THEN
      ! creating a working copy of the file indexed by iversion

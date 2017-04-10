@@ -86,7 +86,7 @@ PROGRAM cdfheatc
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : to be done ....'
      PRINT *,'       Standard output'
-     STOP
+     STOP 99
   ENDIF
 
   ijarg = 1 
@@ -96,7 +96,7 @@ PROGRAM cdfheatc
   lchk = chkfile(cn_fzgr) .OR. lchk
   lchk = chkfile(cn_fmsk) .OR. lchk
   lchk = chkfile(cf_tfil) .OR. lchk
-  IF ( lchk ) STOP ! missing files
+  IF ( lchk ) STOP 99 ! missing files
 
   DO WHILE ( ijarg <= narg ) 
      CALL getarg ( ijarg, cldum) ; ijarg = ijarg + 1

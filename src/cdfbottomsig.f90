@@ -81,13 +81,13 @@ PROGRAM cdfbottomsig
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : sobotsig0 or sobotsigi ( kg/m3 - 1000 )' 
      PRINT *,'                     or sobotsigntr (kg/m3)'
-     STOP
+     STOP 99
   ENDIF
 
   cv_sig = 'sobotsig0'
   cref=''
   CALL getarg (1, cf_tfil)
-  IF ( chkfile(cf_tfil) ) STOP ! missing file
+  IF ( chkfile(cf_tfil) ) STOP 99 ! missing file
 
   IF ( narg == 2 ) THEN
      CALL getarg (2, cldum) 

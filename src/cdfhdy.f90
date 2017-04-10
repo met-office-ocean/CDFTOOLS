@@ -74,14 +74,14 @@ PROGRAM cdfhdy
      PRINT *,'     OUTPUT : '
      PRINT *,'       netcdf file : ', TRIM(cf_out) 
      PRINT *,'         variables : sohdy (m)'
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg (1, cf_tfil )
   CALL getarg (2, cldum   ) ;        READ(cldum,*) nlev1
   CALL getarg (3, cldum   ) ;        READ(cldum,*) nlev2
 
-  IF ( chkfile (cf_tfil) .OR. chkfile(cn_fmsk) .OR. chkfile(cn_fzgr)  ) STOP ! missing file
+  IF ( chkfile (cf_tfil) .OR. chkfile(cn_fmsk) .OR. chkfile(cn_fzgr)  ) STOP 99 ! missing file
 
   npiglo = getdim (cf_tfil,cn_x)
   npjglo = getdim (cf_tfil,cn_y)

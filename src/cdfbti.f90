@@ -83,14 +83,14 @@ PROGRAM cdfbti
      PRINT *,'     SEE ALSO :'
      PRINT *,'      cdfmoyuvwt, cdfbci, cdfnrjcomp, cdfkempemekeepe'
      PRINT *,'      '
-     STOP
+     STOP 99
   ENDIF
 
   CALL getarg(1, cf_uvwtfil)
 
   lchk = chkfile (cn_fhgr )
   lchk = lchk .OR. chkfile (cf_uvwtfil )
-  IF ( lchk ) STOP ! missing file
+  IF ( lchk ) STOP 99 ! missing file
 
   npiglo  = getdim(cf_uvwtfil,cn_x)
   npjglo  = getdim(cf_uvwtfil,cn_y)
