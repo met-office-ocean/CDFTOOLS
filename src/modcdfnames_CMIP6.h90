@@ -67,7 +67,7 @@
   CHARACTER(LEN=256) :: cn_vovecrtz2='w2o'     !: squared vertical velocity
   CHARACTER(LEN=256) :: cn_sossheig='zos'      !: Dynamic Sea Surface Height
   CHARACTER(LEN=256) :: cn_sossheig2='zossq'   !: Squared Dynamic Sea Surface Height
-  CHARACTER(LEN=256) :: cn_somxldep='mlotst'   !: Mixed layer depth
+  CHARACTER(LEN=256) :: cn_somxldep='mlotst'   !: Mixed layer depth (density criterium 0.03kg m-3, Eq H43 Griffies et al., 2016)
   CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)      
   CHARACTER(LEN=256) :: cn_somxlt02='somxlt02' !: Mixed layer depth (temperature criterium)
   CHARACTER(LEN=256) :: cn_sozotaux='tauuo'    !: Zonal wind stress
@@ -109,7 +109,7 @@
   CHARACTER(LEN=256) :: cn_sozous='sozous'     !: product U x S at U point
   CHARACTER(LEN=256) :: cn_somevs='somevs'     !: product V x S at V point
   CHARACTER(LEN=256) :: cn_sozoutrp='umo_vint' !: vertically integrated trp at U point
-  CHARACTER(LEN=256) :: cn_somevtrp='somevtrp' !: vertically integrated trp at V point
+  CHARACTER(LEN=256) :: cn_somevtrp='somevtrp' !: vertically integrated trp at V point ! NOT A CMIP6 VARIABLE
   CHARACTER(LEN=256) :: cn_vouv='vouv'         !: product U x V at T point
 
   ! density, isopycnal diagnostics
