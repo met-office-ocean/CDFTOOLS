@@ -155,7 +155,7 @@ PROGRAM cdfmxlsaltc
   DO jt=1,npt
      dvol= 0.d0
      dmxlsaltc(:,:) = 0.d0
-     zmxl( :,:) = getvar(cf_tfil, cn_somxl010, 1,  npiglo, npjglo, ktime=jt)
+     zmxl( :,:) = getvar(cf_tfil, cn_somxldep, 1,  npiglo, npjglo, ktime=jt)
 
      DO jk = 1, npk
         zs(   :,:) = getvar(cf_tfil, cn_vosaline, jk, npiglo, npjglo, ktime=jt)

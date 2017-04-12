@@ -10,6 +10,10 @@ MODULE modCdfNames
   IMPLICIT NONE
 
   PUBLIC
+#if defined key_CMIP6
+  INCLUDE 'modcdfnames_CMIP6.h90'
+#else
+  CHARACTER(LEN=256) :: cn_output = 'default'
 
   ! Dimension name : cn_. [ 1 letter only ]
   CHARACTER(LEN=256) :: cn_x='x'               !: longitude, I dimension
@@ -55,19 +59,30 @@ MODULE modCdfNames
   CHARACTER(LEN=256) :: cn_fcoo='coordinates.nc'
   CHARACTER(LEN=256) :: cn_fbasins='subbasin.nc'
 
+  ! msk dimension
+  CHARACTER(LEN=256) :: cn_coox='x'          !: longitude, I dimension
+  CHARACTER(LEN=256) :: cn_cooy='y'          !: latitude,  J dimension
+
   ! Mask variable
-  CHARACTER(LEN=256) :: cn_vatlmsk='atlmsk'
-  CHARACTER(LEN=256) :: cn_vindmsk='indmsk'
-  CHARACTER(LEN=256) :: cn_vpacmsk='pacmsk'  
+  CHARACTER(LEN=256) :: cn_vatlmsk='tmaskatl'
+  CHARACTER(LEN=256) :: cn_vindmsk='tmaskind'
+  CHARACTER(LEN=256) :: cn_vpacmsk='tmaskpac'  
 
   ! Variable name  : cn_v... [ starts with cn_v ]
   CHARACTER(LEN=256) :: cn_votemper='votemper' !: temperature
   CHARACTER(LEN=256) :: cn_vosaline='vosaline' !: salinity
+  CHARACTER(LEN=256) :: cn_votemper2='votemper_sqd' !: temperature
+  CHARACTER(LEN=256) :: cn_vosaline2='vosaline_sqd' !: salinity
   CHARACTER(LEN=256) :: cn_vozocrtx='vozocrtx' !: zonal velocity
   CHARACTER(LEN=256) :: cn_vomecrty='vomecrty' !: meridional velocity
+  CHARACTER(LEN=256) :: cn_vozocrtx2='vozocrtx_sqd' !: squared velocity
+  CHARACTER(LEN=256) :: cn_vomecrty2='vomecrty_sqd' !: squared velocity
   CHARACTER(LEN=256) :: cn_vomeeivv='vomeeivv' !: meridional Eddy Induced Velocity
   CHARACTER(LEN=256) :: cn_vovecrtz='vovecrtz' !: vertical velocity
+  CHARACTER(LEN=256) :: cn_vovecrtz2='vovecrtz_sqd' !: squared vertical velocity
   CHARACTER(LEN=256) :: cn_sossheig='sossheig' !: Sea Surface Height
+  CHARACTER(LEN=256) :: cn_sossheig2='sossheig_sqd' !: Sea Surface Height
+  CHARACTER(LEN=256) :: cn_somxldep='somxl010' !: Mixed layer depth
   CHARACTER(LEN=256) :: cn_somxl010='somxl010' !: Mixed layer depth (density criterium)
   CHARACTER(LEN=256) :: cn_somxlt02='somxlt02' !: Mixed layer depth (temperature criterium)
   CHARACTER(LEN=256) :: cn_sozotaux='sozotaux' !: Zonal wind stress
@@ -151,6 +166,7 @@ MODULE modCdfNames
   CHARACTER(LEN=15), DIMENSION(jp_cubvarmax) :: cn_cubvar = &
       & (/'sossheig','votemper',('        ', ji=3,jp_cubvarmax) /)
 
+#endif
 ! INTERFACE  
 !    SUBROUTINE fdate( cldate)
 !    CHARACTER(LEN=24) :: cldate
@@ -184,9 +200,9 @@ MODULE modCdfNames
     NAMELIST/nammetrics/ cn_hdept, cn_hdepw
 
     ! variables 
-    NAMELIST/namvars/ cn_votemper, cn_vosaline
-    NAMELIST/namvars/ cn_vozocrtx, cn_vomecrty, cn_vomeeivv, cn_vovecrtz
-    NAMELIST/namvars/ cn_sossheig, cn_somxl010, cn_somxlt02
+    NAMELIST/namvars/ cn_votemper, cn_vosaline, cn_votemper2, cn_vosaline2
+    NAMELIST/namvars/ cn_vozocrtx, cn_vomecrty, cn_vozocrtx2, cn_vomecrty2, cn_vomeeivv, cn_vovecrtz, cn_vovecrtz2
+    NAMELIST/namvars/ cn_sossheig, cn_sossheig2, cn_somxldep, cn_somxl010, cn_somxlt02
     NAMELIST/namvars/ cn_sohefldo, cn_solhflup, cn_sosbhfup
     NAMELIST/namvars/ cn_solwfldo, cn_soshfldo
     NAMELIST/namvars/ cn_sowaflup, cn_sowaflcd, cn_sowafldp, cn_iowaflup
@@ -210,7 +226,7 @@ MODULE modCdfNames
     NAMELIST/nammeshmask/ cn_fzgr, cn_fhgr, cn_fmsk, cn_fcoo, cn_fbasins
 
     ! name of mesh_mask variable
-    NAMELIST/nammeshmask_var/ cn_vatlmsk, cn_vindmsk, cn_vpacmsk
+    NAMELIST/nammeshmask_var/ cn_coox, cn_cooy, cn_vatlmsk, cn_vindmsk, cn_vpacmsk
 
     ! Bathymetry
     NAMELIST/nambathy/ cn_fbathymet, cn_fbathylev, cn_bathymet, cn_bathylev, cn_mbathy

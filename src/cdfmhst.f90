@@ -347,21 +347,21 @@ PROGRAM cdfmhst
      IF ( llglo ) THEN
         ! Zonal mean with mask
         ! Atlantic 
-        zmask(:,:) = getvar(cn_fbasins, 'tmaskatl', 1, npiglo, npjglo)
+        zmask(:,:) = getvar(cn_fbasins, cn_vatlmsk, 1, npiglo, npjglo)
         DO jj=1,npjglo
            dzonal_heat_atl(jj) = SUM( dtrph(:,jj)*zmask(:,jj) )
            dzonal_salt_atl(jj) = SUM( dtrps(:,jj)*zmask(:,jj) )
         END DO
 
         ! Pacific
-        zmask(:,:) = getvar(cn_fbasins, 'tmaskpac', 1, npiglo, npjglo)
+        zmask(:,:) = getvar(cn_fbasins, cn_vpacmsk, 1, npiglo, npjglo)
         DO jj=1,npjglo
            dzonal_heat_pac(jj) = SUM( dtrph(:,jj)*zmask(:,jj) )
            dzonal_salt_pac(jj) = SUM( dtrps(:,jj)*zmask(:,jj) )
         END DO
 
         ! Indian
-        zmask(:,:) = getvar(cn_fbasins, 'tmaskind', 1, npiglo, npjglo)
+        zmask(:,:) = getvar(cn_fbasins, cn_vindmsk, 1, npiglo, npjglo)
         DO jj=1,npjglo
            dzonal_heat_ind(jj) = SUM( dtrph(:,jj)*zmask(:,jj) )
            dzonal_salt_ind(jj) = SUM( dtrps(:,jj)*zmask(:,jj) )

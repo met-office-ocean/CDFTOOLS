@@ -344,9 +344,9 @@ PROGRAM cdfzonalsum
   ! 1 : global ; 2 : Atlantic ; 3 : Indo-Pacif ; 4 : Indian ; 5 : Pacif
   zmask(1,:,:) = getvar(cn_fmsk, cv_msk, 1, npiglo, npjglo)
   IF ( cf_basins /= 'none' ) THEN
-     zmask(2,:,:) = getvar(cf_basins, 'tmaskatl', 1, npiglo, npjglo )
-     zmask(4,:,:) = getvar(cf_basins, 'tmaskind', 1, npiglo, npjglo )
-     zmask(5,:,:) = getvar(cf_basins, 'tmaskpac', 1, npiglo, npjglo )
+     zmask(2,:,:) = getvar(cf_basins, cn_vatlmsk, 1, npiglo, npjglo )
+     zmask(4,:,:) = getvar(cf_basins, cn_vindmsk, 1, npiglo, npjglo )
+     zmask(5,:,:) = getvar(cf_basins, cn_vpacmsk, 1, npiglo, npjglo )
      zmask(3,:,:) = zmask(5,:,:) + zmask(4,:,:)
      ! ensure that there are no overlapping on the masks
      WHERE(zmask(3,:,:) > 0 ) zmask(3,:,:) = 1
