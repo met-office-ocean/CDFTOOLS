@@ -317,7 +317,7 @@ PROGRAM cdfmocsig
                                                               ! to be compliant with zonal mean
   ! metrics location
   IF ( lmet ) THEN
-     cf_e3v = cf_vfil ; cv_e3v = 'e3v'
+     cf_e3v = cf_vfil ; cv_e3v = cn_ve3vvl
      PRINT *,''
      PRINT *, 'e3v metrics for mocsig computation come from input data file: '
      PRINT *, TRIM(cf_e3v)

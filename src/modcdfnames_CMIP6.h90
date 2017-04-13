@@ -29,6 +29,9 @@
   CHARACTER(LEN=256) :: cn_ve3v='e3v_0', cn_ve3u='e3u_0'   !: e3.
   CHARACTER(LEN=256) :: cn_vff='ff'
 
+  ! in data file metrics
+  CHARACTER(LEN=256) :: cn_ve3vvl='thkcello'
+
   CHARACTER(LEN=256) :: cn_gdept='gdept_1d', cn_gdepw='gdepw_1d' !: 1d dep variable
   CHARACTER(LEN=256) :: cn_hdept='hdept'   , cn_hdepw='hdepw'    !: 2d dep variable
 
