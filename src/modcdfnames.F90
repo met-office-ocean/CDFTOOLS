@@ -45,7 +45,7 @@ MODULE modCdfNames
   CHARACTER(LEN=256) :: cn_vff='ff'
 
   ! in data file metrics
-  CHARACTER(LEN=256) :: cn_ve3vvl='e3'
+  CHARACTER(LEN=256) :: cn_ve3vvl='e3v'
 
   CHARACTER(LEN=256) :: cn_gdept='gdept', cn_gdepw='gdepw'   !: 1d dep variable
   CHARACTER(LEN=256) :: cn_hdept='hdept', cn_hdepw='hdepw'   !: 2d dep variable
